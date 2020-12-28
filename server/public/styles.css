@@ -1,0 +1,27 @@
+*{
+  box-sizing: border-box;
+}
+
+/* body {
+  max-width: 1200px;
+  margin: 0;
+} */
+
+.navbar {
+  background-color: rgb(33, 104, 105);
+}
+
+.menu-icon{
+  color: white;
+}
+
+.logo{
+  /* background-color: blueviolet; */
+  /* margin: 3px 1px; */
+}
+
+/* .menu-icon{
+  align-self: center;
+  margin: 3px 1px;
+  font-size: 1.1rem;
+} */

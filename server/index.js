@@ -4,6 +4,10 @@ const staticMiddleware = require('./static-middleware');
 
 const app = express();
 
+app.post('/api/env', (req, res) => {
+  console.log('hello');
+});
+
 app.use(staticMiddleware);
 
 app.listen(process.env.PORT, () => {

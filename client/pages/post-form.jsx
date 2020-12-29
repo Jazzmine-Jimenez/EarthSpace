@@ -4,20 +4,27 @@ export default class PostForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = { imageSrc: '' };
+
   }
 
   handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
-    fetch('/api/env', {
+    fetch('/api/post-form', {
       method: 'POST',
       body: formData
     })
       .then(res => {
-        const postForm = document.querySelector('form');
+        console.log(res);
+        const postForm = document.getElementById('#post-form');
         postForm.reset();
       })
       .catch(err => console.error(err));
+  }
+
+  handleChange(event) {
+    this.setState({ imageSrc: event.target.value });
   }
 
   render() {
@@ -28,7 +35,7 @@ export default class PostForm extends React.Component {
             <h3 className="heading">Share With Other Earthlings </h3>
           </div>
         </div>
-        <form onSubmit={this.handleSubmit}>
+        <form id="post-form" onSubmit={this.handleSubmit}>
           <div className="row form-group">
             <div className="col-sm-12">
               <label htmlFor="Title">Title: </label>

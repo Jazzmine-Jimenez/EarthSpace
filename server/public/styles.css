@@ -27,14 +27,7 @@ label{
 }
 
 .placeholder{
-  border: 1px solid rgb(187, 187, 187);
-}
-
-.image-border {
-  border: 1px solid rgb(199, 199, 199);
-  border-radius: 5px;
-  padding: 10px;
-  margin: 0px;
+  border: 1px solid rgba(226, 226, 226, 0.884);
 }
 
 .button{
@@ -42,4 +35,17 @@ label{
   color: white;
   padding: 10px 40px;
   margin-bottom: 15px;
+}
+
+.file-container{
+  display: flex;
+  justify-content: center;
+}
+
+.image-container{
+  border: 1px solid rgb(207, 207, 207);
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow:  0.2px 0.2px rgb(184, 184, 184) inset;
 }

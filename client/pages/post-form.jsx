@@ -42,31 +42,45 @@ export default class PostForm extends React.Component {
               <input required autoFocus type="text" className="form-control" name="title" id="title"/>
             </div>
           </div>
-          <div className="row form-group">
-            <div className="col-sm-12">
-              <label>Tags (Choose all that apply):</label>
-                <div className="col-sm-12">
-                  <label className="checkbox-inline tags">
-                    <input type="checkbox" name="tags" value="reduce" /> Reduce
+          <div className="form-group">
+            <div className="row">
+              <div className="col-sm-12">
+                <label>Tags (Choose all that apply):</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-4">
+                <label className="checkbox-inline tags">
+                  <input type="checkbox" name="tags" value="reduce" /> Reduce
                 </label>
-                  <label className="checkbox-inline tags">
+              </div>
+              <div className="col-sm-4">
+                <label className="checkbox-inline tags">
                   <input type="checkbox" name="tags" value="recycle" /> Recycle
                 </label>
-                  <label className="checkbox-inline tags">
-                    <input type="checkbox" name="tags" value="reuse" /> Reuse
+              </div>
+              <div className="col-sm-4">
+                <label className="checkbox-inline tags">
+                  <input type="checkbox" name="tags" value="reuse" /> Reuse
                 </label>
-                </div>
-                <div className="col-sm-12">
-                  <label className="checkbox-inline tags">
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-4">
+                <label className="checkbox-inline tags">
                   <input type="checkbox" name="tags" value="simple" /> Simple
                 </label>
-                  <label className="checkbox-inline tags">
-                    <input type="checkbox" name="tags" value="consumers" /> Consumers
+              </div>
+              <div className="col-sm-4">
+                <label className="checkbox-inline tags">
+                  <input type="checkbox" name="tags" value="consumers" /> Consumers
                 </label>
-                  <label className="checkbox-inline tags">
+              </div>
+              <div className="col-sm-4">
+                <label className="checkbox-inline tags">
                   <input type="checkbox" name="tags" value="buisnesses" /> Buisnesses
                 </label>
-                </div>
+              </div>
             </div>
           </div>
           <div className="row form-group">
@@ -75,20 +89,25 @@ export default class PostForm extends React.Component {
               <textarea className="form-control" name="content" id="content" cols="30" rows="10"></textarea>
             </div>
           </div>
-          <div className="row form-group">
+          <div className="row">
             <div className="col-sm-12">
-              <label> Image: </label>
-              <div className="row form-group">
-                <div className="col-sm-4">
-                  <label htmlFor="image">Upload image: </label>
+              <label> Upload image: </label>
+            </div>
+          </div>
+          <div className="image-container">
+            <div className="row form-control-file">
+              <div className="col-sm-6 file-container">
+                <div className="image">
+                  <label htmlFor="image"> Image: </label>
                   <input type="file" name="image" id="image" />
                 </div>
-                <div className="col-sm-8">
-                  <img className="placeholder" src="placeholder-image.png" alt="placeholder" />
-                </div>
+              </div>
+              <div className="col-sm-6">
+                <img className="placeholder" src="placeholder-image.png" alt="placeholder" />
               </div>
             </div>
           </div>
+
           <button type="submit" className="button btn btn-default">Post</button>
         </form>
       </div>

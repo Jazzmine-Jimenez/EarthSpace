@@ -1,11 +1,12 @@
 require('dotenv/config');
 const express = require('express');
 const staticMiddleware = require('./static-middleware');
+const uploadsMiddleware = require('./uploads-middleware');
 
 const app = express();
 
-app.post('/api/env', (req, res) => {
-  console.log('hello');
+app.post('/api/env', uploadsMiddleware, (req, res, next) => {
+  console.log(req.body);
 });
 
 app.use(staticMiddleware);

@@ -2,10 +2,17 @@
   box-sizing: border-box;
 }
 
-/* body {
-  max-width: 1200px;
-  margin: 0;
-} */
+body {
+  font-family: Roboto;
+}
+
+label{
+  font-weight: 580;
+}
+
+.heading{
+  font-family: Domine;
+}
 
 .navbar {
   background-color: rgb(33, 104, 105);
@@ -15,13 +22,24 @@
   color: white;
 }
 
-.logo{
-  /* background-color: blueviolet; */
-  /* margin: 3px 1px; */
+.tags{
+  margin: 8px 4rem;
 }
 
-/* .menu-icon{
-  align-self: center;
-  margin: 3px 1px;
-  font-size: 1.1rem;
-} */
+.placeholder{
+  border: 1px solid rgb(187, 187, 187);
+}
+
+.image-border {
+  border: 1px solid rgb(199, 199, 199);
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0px;
+}
+
+.button{
+  background-color: rgb(33, 104, 105);
+  color: white;
+  padding: 10px 40px;
+  margin-bottom: 15px;
+}

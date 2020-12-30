@@ -42,6 +42,11 @@ app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/users-posts', (req, res, next) => {
+  // eslint-disable-next-line no-console
+  console.log('hello');
+});
+
 app.use(staticMiddleware);
 
 app.listen(process.env.PORT, () => {

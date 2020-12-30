@@ -21,7 +21,7 @@ CREATE TABLE "Users" (
 
 CREATE TABLE "Post" (
 	"postId" serial NOT NULL,
-	"title" TIME NOT NULL,
+	"title" TEXT NOT NULL,
 	"tags" jsonb NOT NULL,
 	"content" TEXT NOT NULL,
 	"image" TEXT NOT NULL,

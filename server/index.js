@@ -1,6 +1,7 @@
 require('dotenv/config');
-const express = require('express');
 const pg = require('pg');
+const express = require('express');
+const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
 
@@ -10,10 +11,19 @@ const db = new pg.Pool({
 
 const app = express();
 
+const jsonMiddleware = express.json();
+app.use(jsonMiddleware);
+
 app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
   const { title, tags, content } = req.body;
-  const image = req.file.filename;
-  const params = [title, tags, content, image, 1];
+  const tagsArray = JSON.stringify([tags]);
+  if (!title || !tags || !content) {
+    throw new ClientError(400, 'A title, tags and content are required fields');
+  }
+
+  const imageUrl = `images/${req.file.filename}`;
+
+  const params = [title, tagsArray, content, imageUrl, 1];
 
   const sql = `
     insert into "Post" ("title", "tags", "content", "image", "userId")

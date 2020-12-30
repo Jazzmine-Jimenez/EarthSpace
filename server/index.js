@@ -15,12 +15,17 @@ const jsonMiddleware = express.json();
 app.use(jsonMiddleware);
 
 app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
-  const { title, tags, content } = req.body;
-  const tagsArray = JSON.stringify([tags]);
+  const { title, content } = req.body;
+  let { tags } = req.body;
   if (!title || !tags || !content) {
     throw new ClientError(400, 'A title, tags and content are required fields');
   }
 
+  if (!Array.isArray(tags)) {
+    tags = [tags];
+  }
+
+  const tagsArray = JSON.stringify(tags);
   const imageUrl = `images/${req.file.filename}`;
 
   const params = [title, tagsArray, content, imageUrl, 1];

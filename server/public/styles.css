@@ -1,52 +1,18 @@
-*{
-  box-sizing: border-box;
+.heading {
+  font-family: Domine, sans-serif;
 }
 
 body {
-  font-family: Roboto;
-}
-
-label{
-  font-weight: 580;
-}
-
-.heading{
-  font-family: Domine;
+  font-family: Roboto, Georgia, 'Times New Roman', Times, serif;
 }
 
 .navbar {
   background-color: rgb(33, 104, 105);
 }
 
-.menu-icon{
-  color: white;
-}
-
-.tags{
-  margin: 8px 4rem;
-}
-
-.image-preview{
-  border: 1px solid rgba(226, 226, 226, 0.884);
-  width: 80%;
-}
-
-.button{
+.button {
   background-color: rgb(33, 104, 105);
   color: white;
   padding: 10px 40px;
   margin-bottom: 15px;
-}
-
-.file-container{
-  display: flex;
-  justify-content: center;
-}
-
-.image-container{
-  border: 1px solid rgb(207, 207, 207);
-  border-radius: 4px;
-  padding: 10px;
-  margin-bottom: 10px;
-  box-shadow:  0.2px 0.2px rgb(184, 184, 184) inset;
 }

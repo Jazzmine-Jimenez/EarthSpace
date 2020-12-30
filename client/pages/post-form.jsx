@@ -123,7 +123,7 @@ export default class PostForm extends React.Component {
               </div>
             </div>
           </div>
-          <button type="submit" className="button btn btn-default">Post</button>
+          <button type="submit" className="button">Post</button>
         </form>
       </div>
     );

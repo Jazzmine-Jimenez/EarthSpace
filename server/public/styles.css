@@ -26,8 +26,9 @@ label{
   margin: 8px 4rem;
 }
 
-.placeholder{
+.image-preview{
   border: 1px solid rgba(226, 226, 226, 0.884);
+  width: 80%;
 }
 
 .button{

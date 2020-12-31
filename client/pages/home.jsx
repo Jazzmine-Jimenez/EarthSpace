@@ -4,10 +4,10 @@ import Header from '../components/header';
 import UsersPosts from './users-posts';
 
 export default function Home(props) {
+
   return (
     <>
       <Header />
-      <UsersPosts />
     </>
   );
 }

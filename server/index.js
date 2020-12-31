@@ -43,8 +43,22 @@ app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
 });
 
 app.get('/api/users-posts', (req, res, next) => {
-  // eslint-disable-next-line no-console
-  console.log('hello');
+  const { userId } = req.body;
+  if (!userId) {
+    throw new ClientError(400, 'UserId is a required fields');
+  }
+
+  const params = [userId];
+  const sql = `
+    select *
+      from "Post"
+     where "userId" = $1
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows[0]);
+    })
+    .catch(err => next(err));
 });
 
 app.use(staticMiddleware);

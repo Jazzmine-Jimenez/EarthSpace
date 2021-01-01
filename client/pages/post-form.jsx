@@ -20,12 +20,13 @@ export default class PostForm extends React.Component {
     })
       .then(res => {
         event.target.reset();
+        window.location.hash = '#users-posts';
+        this.setState({
+          file: '',
+          imagePreviewUrl: 'placeholder-image.png'
+        });
       })
       .catch(err => console.error(err));
-    this.setState({
-      file: '',
-      imagePreviewUrl: 'placeholder-image.png'
-    });
 
   }
 
@@ -121,9 +122,7 @@ export default class PostForm extends React.Component {
               <img className="image-preview border img-thumbnail rounded" src={imagePreviewUrl} alt="placeholder" />
             </div>
           </div>
-          <a href="#users-posts">
             <button type="submit" className="button my-sm-3">Post</button>
-          </a>
         </form>
       </div>
     );

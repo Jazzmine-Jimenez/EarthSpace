@@ -43,7 +43,6 @@ app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
 });
 
 app.get('/api/users-posts/:userId', (req, res, next) => {
-  console.log('im in');
   const userId = req.params.userId;
 
   if (!userId) {
@@ -62,6 +61,7 @@ app.get('/api/users-posts/:userId', (req, res, next) => {
       from "Post"
       join "Users" using ("userId")
      where "userId" = $1
+  order by "postId" desc
   `;
   db.query(sql, params)
     .then(results => {

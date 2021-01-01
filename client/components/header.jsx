@@ -13,7 +13,7 @@ export default function Header(props) {
               <i className="fas fa-bars menu-icon text-white"></i></a>
               <ul className="dropdown-menu">
                 <li><a href="#">Create a post</a></li>
-                <li><a href="#">View your a posts</a></li>
+                <li><a href="#users-posts">Your posts</a></li>
               </ul>
             </li>
           </ul>

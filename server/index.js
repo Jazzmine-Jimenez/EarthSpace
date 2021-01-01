@@ -42,21 +42,30 @@ app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/users-posts', (req, res, next) => {
-  const { userId } = req.body;
+app.get('/api/users-posts/:userId', (req, res, next) => {
+  console.log('im in');
+  const userId = req.params.userId;
+
   if (!userId) {
     throw new ClientError(400, 'UserId is a required fields');
   }
 
   const params = [userId];
   const sql = `
-    select *
+    select "Post"."title",
+           "Post"."tags",
+           "Post"."content",
+           "Post"."image",
+           "Post"."userId",
+           "Post"."postId",
+           "Users"."username"
       from "Post"
+      join "Users" using ("userId")
      where "userId" = $1
   `;
   db.query(sql, params)
     .then(results => {
-      res.json(results.rows[0]);
+      res.json(results.rows);
     })
     .catch(err => next(err));
 });

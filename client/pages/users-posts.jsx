@@ -36,25 +36,15 @@ export default class UsersPosts extends React.Component {
 
 function OnePost(props) {
   const { title, image, username } = props.post;
-  let { tags } = props.post;
-  if (tags.length > 1) {
-    let tagsString = '';
-    for (let i = 0; i < tags.length; i++) {
-      if (i === tags.length - 1) {
-        tagsString = tagsString + ' ' + tags[i];
-      } else {
-        tagsString = tagsString + ' ' + tags[i] + ',';
-      }
-    }
-    tags = tagsString;
-  }
+  const { tags } = props.post;
+  const tagsString = tags.join(', ');
 
   return (
     <div className="post-container shadow p-3 mb-4 bg-white rounded">
       <div className="row align-items-center">
       <div className="col-sm-6 py-sm-5 px-sm-5">
         <h4 className="title"> { title } </h4>
-        <p className="sub-title"> { tags } </p>
+        <p className="sub-title"> { tagsString } </p>
           <h6><i className="fas fa-user"></i> { username } </h6>
       </div>
       <div className="col-sm-6">

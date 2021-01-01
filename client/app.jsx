@@ -30,7 +30,7 @@ export default class App extends React.Component {
     if (route.path === 'users-posts') {
       return <UsersPosts />;
     }
-    <NotFound />;
+    return <NotFound />;
   }
 
   render() {

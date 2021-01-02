@@ -1,5 +1,4 @@
 import React from 'react';
-// import Home from './pages/home';
 import Header from './components/header';
 import PostForm from './pages/post-form';
 import UsersPosts from './pages/users-posts';

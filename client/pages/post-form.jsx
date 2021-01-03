@@ -20,12 +20,13 @@ export default class PostForm extends React.Component {
     })
       .then(res => {
         event.target.reset();
+        window.location.hash = '#users-posts';
+        this.setState({
+          file: '',
+          imagePreviewUrl: 'placeholder-image.png'
+        });
       })
       .catch(err => console.error(err));
-    this.setState({
-      file: '',
-      imagePreviewUrl: 'placeholder-image.png'
-    });
 
   }
 
@@ -52,8 +53,8 @@ export default class PostForm extends React.Component {
           </div>
         </div>
         <form id="post-form" onSubmit={this.handleSubmit} className="text-muted">
-          <div className="row form-group">
-            <div className="col-sm-12">
+          <div className="row">
+            <div className="col-sm-12 mb-3">
               <label htmlFor="title">Title: </label>
               <input required type="text" className="form-control" name="title" id="title"/>
             </div>
@@ -82,7 +83,7 @@ export default class PostForm extends React.Component {
                   </label>
                 </div>
               </div>
-              <div className="row">
+              <div className="row mb-3">
                 <div className="col-sm-4">
                   <label className="tags">
                     <input type="checkbox" id="option4" name="tags" value="simple" /> Simple
@@ -102,12 +103,12 @@ export default class PostForm extends React.Component {
             </div>
           </div>
           <div className="row form-group">
-            <div className="col-sm-12">
+            <div className="col-sm-12 mb-3">
               <label htmlFor="content">What would you like to share?</label>
               <textarea required className="form-control" name="content" id="content" cols="30" rows="10"></textarea>
             </div>
           </div>
-          <div className="row">
+          <div className="row form-group">
             <div className="col-sm-12">
               <label> Upload image: </label>
             </div>
@@ -121,7 +122,7 @@ export default class PostForm extends React.Component {
               <img className="image-preview border img-thumbnail rounded" src={imagePreviewUrl} alt="placeholder" />
             </div>
           </div>
-          <button type="submit" className="button my-sm-3">Post</button>
+            <button type="submit" className="button my-sm-3">Post</button>
         </form>
       </div>
     );

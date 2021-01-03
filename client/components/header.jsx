@@ -2,22 +2,23 @@ import React from 'react';
 
 export default function Header(props) {
   return (
-    <header>
-      <nav className="navbar navbar-default">
-        <div className="container-fluid">
-          <div className="navbar-header">
-            <a className="navbar-brand text-white" href="#">Earth</a>
-          </div>
-          <ul className="nav navbar-nav navbar-right">
-            <li className="dropdown"><a className="dropdown-toggle" data-toggle="dropdown" href="#">
-              <i className="fas fa-bars menu-icon text-white"></i></a>
-              <ul className="dropdown-menu">
-                <li><a href="#">Create a Post</a></li>
-              </ul>
+    <nav className="navbar navbar-expand-lg navbar-dark navbar-color">
+      <div className="container-fluid">
+        <a className="navbar-brand" href="#">Earth</a>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <a className="nav-link" aria-current="page" href="#">Create post</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#users-posts">View posts</a>
             </li>
           </ul>
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
 }

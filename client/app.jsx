@@ -1,9 +1,10 @@
 import React from 'react';
+import parseRoute from './lib/parse-route';
 import Header from './components/header';
 import PostForm from './pages/post-form';
 import UsersPosts from './pages/users-posts';
 import NotFound from './pages/not-found';
-import parseRoute from './lib/parse-route';
+import ViewPost from './pages/view-post';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -21,15 +22,16 @@ export default class App extends React.Component {
   }
 
   renderPage() {
-    const { route } = this.state;
+    // const { route } = this.state;
 
-    if (route.path === '') {
-      return <PostForm />;
-    }
-    if (route.path === 'users-posts') {
-      return <UsersPosts />;
-    }
-    return <NotFound />;
+    // if (route.path === '') {
+    //   return <PostForm />;
+    // }
+    // if (route.path === 'users-posts') {
+    //   return <UsersPosts />;
+    // }
+    // return <NotFound />;
+    return <ViewPost/>;
   }
 
   render() {

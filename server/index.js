@@ -55,13 +55,38 @@ app.get('/api/users-posts/:userId', (req, res, next) => {
            "Post"."tags",
            "Post"."content",
            "Post"."image",
-           "Post"."userId",
-           "Post"."postId",
            "Users"."username"
       from "Post"
       join "Users" using ("userId")
      where "userId" = $1
   order by "postId" desc
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/post/:postId/user/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const postId = req.params.postId;
+
+  if (!userId) {
+    throw new ClientError(400, 'UserId and PostId is a required fields');
+  }
+
+  const params = [userId, postId];
+  const sql = `
+    select "Post"."title",
+           "Post"."tags",
+           "Post"."content",
+           "Post"."image",
+           "Users"."username"
+      from "Post"
+      join "Users" using ("userId")
+     where "userId" = $1
+       and "Post"."postId" = $2
   `;
   db.query(sql, params)
     .then(results => {

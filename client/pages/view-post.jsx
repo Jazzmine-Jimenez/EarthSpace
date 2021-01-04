@@ -11,13 +11,19 @@ export default class ViewPost extends React.Component {
 
   componentDidMount() {
     fetch('/api/post/14/user/1')
-      .then(res => res.json())
-      .then(posts => {
+      .then(res => {
+        console.log('res:', res);
+        res.json();
+      })
+      .then(post => {
+        console.log('post:', post);
         this.setState({ post });
       });
   }
 
   render() {
+    // const { title, content, tags, image, username } = this.state.post;
+    console.log(this.state.post);
     return (
       <div className="container">
         <h3 className="title heading my-sm-4">What you&apos;ve Shared with Other Earthlings </h3>
@@ -55,4 +61,8 @@ export default class ViewPost extends React.Component {
       </div>
     );
   }
+}
+
+function APost(props) {
+  console.log(props);
 }

@@ -90,7 +90,7 @@ app.get('/api/post/:postId/user/:userId', (req, res, next) => {
   `;
   db.query(sql, params)
     .then(results => {
-      res.json(results.rows);
+      res.json(results.rows[0]);
     })
     .catch(err => next(err));
 });

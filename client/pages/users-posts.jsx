@@ -6,6 +6,8 @@ export default class UsersPosts extends React.Component {
     this.state = {
       posts: []
     };
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -16,9 +18,13 @@ export default class UsersPosts extends React.Component {
       });
   }
 
+  handleClick() {
+    window.location.hash = '#view-post';
+  }
+
   render() {
     return (
-      <div className="container">
+      <div className="container" onClick={this.handleClick}>
         <h3 className="heading my-sm-4">What you&apos;ve Shared with Other Earthlings </h3>
             {
               this.state.posts.map(post => {

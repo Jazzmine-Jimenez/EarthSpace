@@ -22,16 +22,18 @@ export default class App extends React.Component {
   }
 
   renderPage() {
-    // const { route } = this.state;
+    const { route } = this.state;
 
-    // if (route.path === '') {
-    //   return <PostForm />;
-    // }
-    // if (route.path === 'users-posts') {
-    //   return <UsersPosts />;
-    // }
-    // return <NotFound />;
-    return <ViewPost/>;
+    if (route.path === '') {
+      return <PostForm />;
+    }
+    if (route.path === 'users-posts') {
+      return <UsersPosts />;
+    }
+    if (route.path === 'view-post') {
+      return <ViewPost />;
+    }
+    return <NotFound />;
   }
 
   render() {

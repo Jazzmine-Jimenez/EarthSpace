@@ -30,8 +30,9 @@ export default class App extends React.Component {
     if (route.path === 'users-posts') {
       return <UsersPosts />;
     }
-    if (route.path === 'view-post') {
-      return <ViewPost />;
+    if (route.path === 'post') {
+      const postId = route.params.get('postId');
+      return <ViewPost postId={postId}/>;
     }
     return <NotFound />;
   }

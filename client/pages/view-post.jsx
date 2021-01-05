@@ -16,7 +16,7 @@ export default class ViewPost extends React.Component {
 
   render() {
     if (!this.state.post) return null;
-    const { title, content, tags, image, username } = this.state.post;
+    const { title, content, tags, image, username, postId } = this.state.post;
     const tagsString = tags.join(', ');
 
     return (
@@ -39,9 +39,14 @@ export default class ViewPost extends React.Component {
             </div>
           </div>
           <hr />
-          <div className="row">
-            <div className="col py-sm-3 px-sm-5">
-              <h6 className="float-end"><i className="fas fa-user"></i> {username} </h6>
+          <div className="row py-3 px-5 text-muted">
+            <div className="col-6 edit-icon">
+              <a href={`#edit-post?postId=${postId}`} className="text-muted">
+                <i className="fas fa-edit"></i>
+              </a>
+            </div>
+            <div className="col-6">
+              <p className="float-end"><i className="fas fa-user"></i> {username} </p>
             </div>
           </div>
         </div>

@@ -29,7 +29,6 @@ app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
   const imageUrl = `images/${req.file.filename}`;
 
   const params = [title, tagsArray, content, imageUrl, 1];
-
   const sql = `
     insert into "Post" ("title", "tags", "content", "image", "userId")
          values  ($1, $2, $3, $4, $5)
@@ -91,6 +90,37 @@ app.get('/api/post/:postId', (req, res, next) => {
   db.query(sql, params)
     .then(results => {
       res.json(results.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+app.put('/api/post/:postId/user/:userId', uploadsMiddleware, (req, res, next) => {
+  const postId = req.params.postId;
+  const userId = req.params.userId;
+  const { title, tags, content } = req.body;
+
+  if (!postId) {
+    throw new ClientError(400, 'UserId and PostId is a required fields');
+  }
+
+  const tagsArray = JSON.stringify(tags);
+  const imageUrl = `images/${req.file.filename}`;
+
+  const params = [title, tagsArray, content, imageUrl, postId, userId];
+  console.log(params);
+  const sql = `
+    update "Post"
+       set "title" = $1,
+           "tags" = $2,
+           "content" = $3,
+           "image" = $4
+     where "postId" = $5
+       and "userId" = $6
+ returning *
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows);
     })
     .catch(err => next(err));
 });

@@ -107,7 +107,6 @@ app.put('/api/post/:postId/user/:userId', uploadsMiddleware, (req, res, next) =>
   const imageUrl = `images/${req.file.filename}`;
 
   const params = [title, tagsArray, content, imageUrl, postId, userId];
-  console.log(params);
   const sql = `
     update "Post"
        set "title" = $1,

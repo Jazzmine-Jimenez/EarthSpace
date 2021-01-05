@@ -4,13 +4,12 @@ export default class EditPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      post: null,
-      file: '',
-      imagePreviewUrl: ''
+      post: null
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleCheck = this.handleCheck.bind(this);
   }
 
   componentDidMount() {
@@ -19,28 +18,28 @@ export default class EditPost extends React.Component {
       .then(post => this.setState({ post }));
   }
 
+  handleCheck(event) {
+    const { checked, value } = event.target;
+    const tagsArray = this.state.post.tags;
+    if (checked) {
+      const updatedArray = tagsArray.concat([value]);
+      return updatedArray;
+    } else {
+      const updatedArray = tagsArray.filter(tag => tag !== value);
+      return updatedArray;
+    }
+  }
+
   handleChange(event) {
     const { name, value } = event.target;
-    const reader = new FileReader();
-    // const file = event.target.files[0];
     const postState = this.state.post;
     const newPostState = Object.assign({}, postState);
     if (name === 'tags') {
-      newPostState.tags.push(value);
-      console.log(newPostState);
+      newPostState[name] = this.handleCheck(event);
     } else {
       newPostState[name] = value;
     }
-
     this.setState({ post: newPostState });
-
-    reader.onloadend = () => {
-      this.setState({
-        // file: file,
-        imagePreviewUrl: reader.result
-      });
-    };
-    // reader.readAsDataURL(file);
   }
 
   handleSubmit(event) {
@@ -61,7 +60,6 @@ export default class EditPost extends React.Component {
     if (!this.state.post) return null;
 
     const { title, content, image } = this.state.post;
-    // const { file } = this.state.file;
 
     return (
       <div className="container">
@@ -84,13 +82,13 @@ export default class EditPost extends React.Component {
                 <label>Tags (Choose all that apply):</label>
               </div>
             </div>
-            <div className="tags-container ml-sm-3">
+            <div className="tags-container ml-3">
               <div className="row">
                 <div className="col-sm-4 ">
                   <label className="tags">
                     <input type="checkbox" id="option1" name="tags"
                     onChange={this.handleChange}
-                    checked={this.state.post.tags.includes('reduce')}
+                      checked={this.state.post.tags.includes('reduce')}
                     value="reduce" /> Reduce
                   </label>
                 </div>
@@ -98,7 +96,7 @@ export default class EditPost extends React.Component {
                   <label className="tags">
                     <input type="checkbox" id="option2" name="tags"
                     onChange={this.handleChange}
-                    checked={this.state.post.tags.includes('recycle')}
+                      checked={this.state.post.tags.includes('recycle')}
                     value="recycle" /> Recycle
                   </label>
                 </div>
@@ -106,7 +104,7 @@ export default class EditPost extends React.Component {
                   <label className="tags">
                     <input type="checkbox" id="option3" name="tags"
                     onChange={this.handleChange}
-                    checked={this.state.post.tags.includes('reuse')}
+                      checked={this.state.post.tags.includes('reuse')}
                     value="reuse" /> Reuse
                   </label>
                 </div>
@@ -116,7 +114,7 @@ export default class EditPost extends React.Component {
                   <label className="tags">
                     <input type="checkbox" id="option4" name="tags"
                     onChange={this.handleChange}
-                    checked={this.state.post.tags.includes('simple')}
+                      checked={this.state.post.tags.includes('simple')}
                     value="simple" /> Simple
                   </label>
                 </div>
@@ -154,7 +152,7 @@ export default class EditPost extends React.Component {
           <div className="row border rounded py-sm-3 align-items-center">
             <div className="col-sm-6">
               <label htmlFor="image" className="mx-sm-3"> Image: </label>
-              <input required onChange={this.handleChange} type="file"
+              <input onChange={this.handleCheck} type="file"
                 name="image" id="image"/>
             </div>
             <div className="col-sm-6">

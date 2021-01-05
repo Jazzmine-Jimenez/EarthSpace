@@ -4,7 +4,10 @@ export default class EditPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      post: null
+      post: null,
+      checked: false,
+      file: '',
+      imagePreviewUrl: ''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -76,6 +79,7 @@ export default class EditPost extends React.Component {
                 id="title" onChange={this.handleChange} value={title} />
             </div>
           </div>
+
           <div className="form-group">
             <div className="row">
               <div className="col-sm-12">
@@ -137,6 +141,7 @@ export default class EditPost extends React.Component {
               </div>
             </div>
           </div>
+
           <div className="row form-group">
             <div className="col-sm-12 mb-3">
               <label htmlFor="content">What would you like to share?</label>
@@ -152,7 +157,7 @@ export default class EditPost extends React.Component {
           <div className="row border rounded py-sm-3 align-items-center">
             <div className="col-sm-6">
               <label htmlFor="image" className="mx-sm-3"> Image: </label>
-              <input onChange={this.handleCheck} type="file"
+              <input onChange={this.handleChange} type="file"
                 name="image" id="image"/>
             </div>
             <div className="col-sm-6">

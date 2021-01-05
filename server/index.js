@@ -97,14 +97,23 @@ app.get('/api/post/:postId', (req, res, next) => {
 app.put('/api/post/:postId/user/:userId', uploadsMiddleware, (req, res, next) => {
   const postId = req.params.postId;
   const userId = req.params.userId;
-  const { title, tags, content } = req.body;
+  const { title, content } = req.body;
+  let { tags } = req.body;
 
-  if (!postId) {
-    throw new ClientError(400, 'UserId and PostId is a required fields');
+  if (!postId || !userId) {
+    throw new ClientError(400, 'userId and postId is a required fields');
+  }
+
+  if (!Array.isArray(tags)) {
+    tags = [tags];
   }
 
   const tagsArray = JSON.stringify(tags);
-  const imageUrl = `images/${req.file.filename}`;
+  let imageUrl = null;
+
+  if (req.file) {
+    imageUrl = `images/${req.file.filename}`;
+  }
 
   const params = [title, tagsArray, content, imageUrl, postId, userId];
   const sql = `
@@ -112,7 +121,7 @@ app.put('/api/post/:postId/user/:userId', uploadsMiddleware, (req, res, next) =>
        set "title" = $1,
            "tags" = $2,
            "content" = $3,
-           "image" = $4
+           "image" = coalesce($4, "image")
      where "postId" = $5
        and "userId" = $6
  returning *

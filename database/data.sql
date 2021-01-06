@@ -1,2 +1,2 @@
-insert into "Users" ("username", "firstName", "lastName")
-     values ('JazzyWazzy', 'Jazzmine', 'Jimenez')
+insert into "Users" ("username", "firstName", "lastName", "hashedPassword")
+     values ('JazzyWazzy', 'Jazzmine', 'Jimenez', 'tempPassword')

@@ -17,10 +17,16 @@ body {
   margin-bottom: 15px;
 }
 
+.button-delete {
+  background-color: rgb(33, 104, 105);
+  color: white;
+  padding: 5px 10px;
+}
+
 .anchor-styling {
   text-decoration: none;
 }
 
-.edit-icon{
+.edit-icon {
   font-size: 1.2rem;
 }

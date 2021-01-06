@@ -29,9 +29,9 @@ export default class ViewPost extends React.Component {
               <p> {content} </p>
             </div>
             <div className="col-sm-5">
-              <div className="image-container pr-sm-5">
-                <img className="photo border img-thumbnail rounded mb-2"
-                  src={image} alt="" />
+              <div className="image-container">
+                <img className="photo border img-thumbnail rounded"
+                  src={image} alt="post image" />
                 <p className="sub-title mx-sm-2">
                   <i className="fas fa-hashtag mx-sm-1"></i>
                   {tagsString} </p>

@@ -5,6 +5,7 @@ import PostForm from './pages/post-form';
 import UsersPosts from './pages/users-posts';
 import NotFound from './pages/not-found';
 import ViewPost from './pages/view-post';
+import EditPost from './pages/edit-post';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -33,6 +34,10 @@ export default class App extends React.Component {
     if (route.path === 'post') {
       const postId = route.params.get('postId');
       return <ViewPost postId={postId}/>;
+    }
+    if (route.path === 'edit-post') {
+      const postId = route.params.get('postId');
+      return <EditPost postId={postId} />;
     }
     return <NotFound />;
   }

@@ -5,20 +5,22 @@ export default class EditPost extends React.Component {
     super(props);
     this.state = {
       post: null,
-      checked: false,
       file: '',
-      imagePreviewUrl: ''
+      imagePreviewChanged: ''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
+    this.handleImageChange = this.handleImageChange.bind(this);
   }
 
   componentDidMount() {
     fetch(`/api/post/${this.props.postId}`)
       .then(res => res.json())
-      .then(post => this.setState({ post }));
+      .then(post => this.setState({
+        post
+      }));
   }
 
   handleCheck(event) {
@@ -31,6 +33,19 @@ export default class EditPost extends React.Component {
       const updatedArray = tagsArray.filter(tag => tag !== value);
       return updatedArray;
     }
+  }
+
+  handleImageChange(event) {
+    const reader = new FileReader();
+    const file = event.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        file: file,
+        imagePreviewChanged: reader.result
+      });
+    };
+    reader.readAsDataURL(file);
   }
 
   handleChange(event) {
@@ -63,6 +78,14 @@ export default class EditPost extends React.Component {
     if (!this.state.post) return null;
 
     const { title, content, image } = this.state.post;
+    const { imagePreviewChanged } = this.state;
+
+    let currentPreviewImage = null;
+    if (imagePreviewChanged === '') {
+      currentPreviewImage = image;
+    } else {
+      currentPreviewImage = imagePreviewChanged;
+    }
 
     return (
       <div className="container">
@@ -79,7 +102,6 @@ export default class EditPost extends React.Component {
                 id="title" onChange={this.handleChange} value={title} />
             </div>
           </div>
-
           <div className="form-group">
             <div className="row">
               <div className="col-sm-12">
@@ -141,7 +163,6 @@ export default class EditPost extends React.Component {
               </div>
             </div>
           </div>
-
           <div className="row form-group">
             <div className="col-sm-12 mb-3">
               <label htmlFor="content">What would you like to share?</label>
@@ -157,11 +178,11 @@ export default class EditPost extends React.Component {
           <div className="row border rounded py-sm-3 align-items-center">
             <div className="col-sm-6">
               <label htmlFor="image" className="mx-sm-3"> Image: </label>
-              <input onChange={this.handleChange} type="file"
+              <input onChange={this.handleImageChange} type="file"
                 name="image" id="image"/>
             </div>
             <div className="col-sm-6">
-              <img className="image-preview border img-thumbnail rounded" src={image} alt="placeholder" />
+              <img className="image-preview border img-thumbnail rounded" src={currentPreviewImage} alt="placeholder" />
             </div>
           </div>
           <button type="submit" className="button my-sm-3">Update</button>

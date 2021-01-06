@@ -23,3 +23,11 @@ body {
 .edit-icon {
   font-size: 1.2rem;
 }
+
+.test {
+  background-color: blue;
+}
+
+.sign-up-container {
+  max-width: 600px;
+}

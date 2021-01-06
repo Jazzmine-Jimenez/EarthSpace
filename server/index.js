@@ -133,6 +133,29 @@ app.put('/api/post/:postId/user/:userId', uploadsMiddleware, (req, res, next) =>
     .catch(err => next(err));
 });
 
+app.delete('/api/post/:postId/user/:userId', (req, res, next) => {
+  const postId = req.params.postId;
+  const userId = req.params.userId;
+
+  if (!postId || !userId) {
+    throw new ClientError(400, 'userId and postId is a required fields');
+  }
+
+  const params = [postId, userId];
+
+  const sql = `
+    delete from "Post"
+          where "postId" = $1
+            and "userId" = $2
+      returning *
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.use(staticMiddleware);
 
 app.listen(process.env.PORT, () => {

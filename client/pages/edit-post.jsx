@@ -13,6 +13,7 @@ export default class EditPost extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -72,6 +73,15 @@ export default class EditPost extends React.Component {
         res.json();
       })
       .then(post => this.setState({ post }));
+  }
+
+  handleDelete() {
+    fetch(`/api/post/${this.props.postId}/user/1`, {
+      method: 'DELETE'
+    })
+      .then(res => {
+        window.location.hash = '#users-posts';
+      });
   }
 
   render() {
@@ -175,17 +185,46 @@ export default class EditPost extends React.Component {
               <label> Upload image: </label>
             </div>
           </div>
-          <div className="row border rounded py-sm-3 align-items-center">
+          <div className="row border rounded py-3 align-items-center">
             <div className="col-sm-6">
-              <label htmlFor="image" className="mx-sm-3"> Image: </label>
+              <label htmlFor="image" className="mx-3"> Image: </label>
               <input onChange={this.handleImageChange} type="file"
                 name="image" id="image"/>
             </div>
             <div className="col-sm-6">
-              <img className="image-preview border img-thumbnail rounded" src={currentPreviewImage} alt="placeholder" />
+              <img className="image-preview border img-thumbnail rounded"
+              src={currentPreviewImage} alt="placeholder" />
             </div>
           </div>
-          <button type="submit" className="button my-sm-3">Update</button>
+          <div className="row">
+            <div className="col-12 my-3">
+              <button type="submit" className="btn btn-lg button me-3">
+                Update</button>
+              <button type="button" className="btn btn-lg button"
+              data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Delete </button>
+            </div>
+            <div className="modal fade" id="exampleModal" tabIndex="-1"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">
+                      Delete Post</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+                  </div>
+                  <div className="modal-body">
+                    Are you sure you want to delete this post?</div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary"
+                    data-bs-dismiss="modal">Cancel</button>
+                    <button onClick={this.handleDelete} type="button" data-bs-dismiss="modal" className="btn button">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     );

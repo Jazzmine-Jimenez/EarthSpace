@@ -122,7 +122,7 @@ export default class PostForm extends React.Component {
               <img className="image-preview border img-thumbnail rounded" src={imagePreviewUrl} alt="placeholder" />
             </div>
           </div>
-            <button type="submit" className="button my-sm-3">Post</button>
+            <button type="submit" className="btn button my-sm-3">Post</button>
         </form>
       </div>
     );

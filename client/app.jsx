@@ -1,6 +1,7 @@
 import React from 'react';
 import parseRoute from './lib/parse-route';
 import Header from './components/header';
+import SignUp from './pages/sign-up';
 import PostForm from './pages/post-form';
 import UsersPosts from './pages/users-posts';
 import NotFound from './pages/not-found';
@@ -24,8 +25,10 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
-
     if (route.path === '') {
+      return <SignUp />;
+    }
+    if (route.path === 'post-form') {
       return <PostForm />;
     }
     if (route.path === 'users-posts') {

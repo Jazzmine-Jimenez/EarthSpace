@@ -7,6 +7,7 @@ import UsersPosts from './pages/users-posts';
 import NotFound from './pages/not-found';
 import ViewPost from './pages/view-post';
 import EditPost from './pages/edit-post';
+import SignIn from './pages/sign-in';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -26,6 +27,9 @@ export default class App extends React.Component {
   renderPage() {
     const { route } = this.state;
     if (route.path === '') {
+      return <SignIn />;
+    }
+    if (route.path === 'sign-up') {
       return <SignUp />;
     }
     if (route.path === 'post-form') {

@@ -82,9 +82,10 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
+app.post('/api/post-form/user/:userId', uploadsMiddleware, (req, res, next) => {
   const { title, content } = req.body;
   let { tags } = req.body;
+  const userId = req.params.userId;
   if (!title || !tags || !content) {
     throw new ClientError(400, 'A title, tags and content are required fields');
   }
@@ -96,7 +97,7 @@ app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
   const tagsArray = JSON.stringify(tags);
   const imageUrl = `images/${req.file.filename}`;
 
-  const params = [title, tagsArray, content, imageUrl, 1];
+  const params = [title, tagsArray, content, imageUrl, userId];
   const sql = `
     insert into "Post" ("title", "tags", "content", "image", "userId")
          values  ($1, $2, $3, $4, $5)
@@ -140,7 +141,7 @@ app.get('/api/post/:postId', (req, res, next) => {
   const postId = req.params.postId;
 
   if (!postId) {
-    throw new ClientError(400, 'UserId and PostId is a required fields');
+    throw new ClientError(400, 'PostId is a required fields');
   }
 
   const params = [postId];

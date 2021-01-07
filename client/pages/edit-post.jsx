@@ -1,4 +1,5 @@
 import React from 'react';
+import AppContext from '../lib/app-context';
 
 export default class EditPost extends React.Component {
   constructor(props) {
@@ -62,9 +63,10 @@ export default class EditPost extends React.Component {
   }
 
   handleSubmit(event) {
+    const userId = this.context.userId.userId;
     event.preventDefault();
     const formData = new FormData(event.target);
-    fetch(`/api/post/${this.props.postId}/user/1`, {
+    fetch(`/api/post/${this.props.postId}/user/${userId}`, {
       method: 'PUT',
       body: formData
     })
@@ -76,7 +78,8 @@ export default class EditPost extends React.Component {
   }
 
   handleDelete() {
-    fetch(`/api/post/${this.props.postId}/user/1`, {
+    const userId = this.context.userId.userId;
+    fetch(`/api/post/${this.props.postId}/user/${userId}`, {
       method: 'DELETE'
     })
       .then(res => {
@@ -230,3 +233,5 @@ export default class EditPost extends React.Component {
     );
   }
 }
+
+EditPost.contextType = AppContext;

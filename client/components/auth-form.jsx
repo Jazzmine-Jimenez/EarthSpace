@@ -17,7 +17,6 @@ export default class AuthForm extends React.Component {
   }
 
   handleSubmit(event) {
-    console.log('inside handleSubmit');
     event.preventDefault();
     fetch('/api/auth/sign-in', {
       method: 'POST',
@@ -28,16 +27,13 @@ export default class AuthForm extends React.Component {
     })
       .then(res => res.json())
       .then(result => {
-        console.log(result);
         if (result.payload.userId && result.token) {
-          console.log('inside if statement');
           this.props.onSignIn(result);
         }
       });
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="sign-up-container m-4 mx-auto">
         <form onSubmit={this.handleSubmit}>

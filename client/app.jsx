@@ -30,14 +30,12 @@ export default class App extends React.Component {
       this.setState({ route: change });
     });
     const token = window.localStorage.getItem('earth-jwt');
-    console.log('token:', token);
     const userId = token ? decodeToken(token) : null;
     this.setState({ userId, isAuthorizing: false });
   }
 
   handleSignIn(result) {
     const { userId, token } = result;
-    console.log(result);
     window.localStorage.setItem('earth-jwt', token);
     this.setState({ userId });
     window.location.hash = '#users-posts';
@@ -73,6 +71,7 @@ export default class App extends React.Component {
     const { userId, route } = this.state;
     const { handleSignIn } = this;
     const contextValue = { userId, route, handleSignIn };
+
     return (
     <AppContext.Provider value={contextValue}>
         <>

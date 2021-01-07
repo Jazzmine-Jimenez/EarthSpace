@@ -5,9 +5,7 @@ import AppContext from '../lib/app-context';
 
 export default class SignIn extends React.Component {
   render() {
-    console.log(this.context);
-
-    const { userId, route, handleSignIn } = this.context;
+    const { route, handleSignIn } = this.context;
 
     // if (userId) return <Redirect to="sign-up" />;
 
@@ -27,7 +25,6 @@ export default class SignIn extends React.Component {
         </div>
         <AuthForm
           key={route.path}
-          // action={route.path}
           onSignIn={handleSignIn} />
         </>
     );

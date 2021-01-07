@@ -1,4 +1,5 @@
 import React from 'react';
+import AppContext from '../lib/app-context';
 
 export default class PostForm extends React.Component {
   constructor(props) {
@@ -13,8 +14,9 @@ export default class PostForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    const userId = this.context.userId.userId;
     const formData = new FormData(event.target);
-    fetch('/api/post-form', {
+    fetch(`/api/post-form/user/${userId}`, {
       method: 'POST',
       body: formData
     })
@@ -128,3 +130,5 @@ export default class PostForm extends React.Component {
     );
   }
 }
+
+PostForm.contextType = AppContext;

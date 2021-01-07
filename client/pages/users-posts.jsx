@@ -1,4 +1,5 @@
 import React from 'react';
+import AppContext from '../lib/app-context';
 
 export default class UsersPosts extends React.Component {
   constructor(props) {
@@ -9,7 +10,8 @@ export default class UsersPosts extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/users-posts/1')
+    const userId = this.context.userId.userId;
+    fetch(`/api/users-posts/${userId}`)
       .then(res => res.json())
       .then(posts => {
         this.setState({ posts });
@@ -57,3 +59,5 @@ function OnePost(props) {
     </a>
   );
 }
+
+UsersPosts.contextType = AppContext;

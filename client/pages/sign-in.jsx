@@ -1,13 +1,10 @@
 import React from 'react';
-// import Redirect from '../components/redirect';
 import AuthForm from '../components/auth-form';
 import AppContext from '../lib/app-context';
 
 export default class SignIn extends React.Component {
   render() {
     const { route, handleSignIn } = this.context;
-
-    // if (userId) return <Redirect to="sign-up" />;
 
     return (
       <>

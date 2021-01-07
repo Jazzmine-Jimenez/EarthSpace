@@ -2,6 +2,7 @@ require('dotenv/config');
 const pg = require('pg');
 const argon2 = require('argon2'); // eslint-disable-line
 const express = require('express');
+const jwt = require('jsonwebtoken'); // eslint-disable-line
 const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
@@ -36,6 +37,47 @@ app.post('/api/auth/sign-up', (req, res, next) => {
     .then(result => {
       const [user] = result.rows;
       res.status(201).json(user);
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/auth/sign-in', (req, res, next) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new ClientError(401, 'invalid login');
+  }
+
+  const params = [username];
+
+  const sql = `
+    select "userId", "hashedPassword", "username"
+      from "Users"
+     where "username" = $1
+  `;
+
+  db
+    .query(sql, params)
+    .then(result => {
+      if (result.rows.length === 0) {
+        throw new ClientError(401, 'invalid login');
+      } else {
+        const hashedPassword = result.rows[0].hashedPassword;
+        argon2
+          .verify(hashedPassword, password)
+          .then(isMatching => {
+            if (isMatching === false) {
+              throw new ClientError(400, 'Invalid login');
+            } else {
+              const payload = {
+                userId: result.rows[0].userId,
+                username: params[0]
+              };
+              const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+              res.status(201).json({ token, payload });
+            }
+          })
+          .catch(err => next(err));
+      }
     })
     .catch(err => next(err));
 });

@@ -1,18 +1,22 @@
 import React from 'react';
+import AppContext from './lib/app-context';
 import parseRoute from './lib/parse-route';
+import decodeToken from './lib/decode-token';
 import Header from './components/header';
 import SignUp from './pages/sign-up';
+import SignIn from './pages/sign-in';
 import PostForm from './pages/post-form';
 import UsersPosts from './pages/users-posts';
-import NotFound from './pages/not-found';
 import ViewPost from './pages/view-post';
 import EditPost from './pages/edit-post';
-import SignIn from './pages/sign-in';
+import NotFound from './pages/not-found';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: null,
+      isAuthorizing: true,
       route: parseRoute(window.location.hash)
     };
   }
@@ -22,6 +26,15 @@ export default class App extends React.Component {
       const change = parseRoute(window.location.hash);
       this.setState({ route: change });
     });
+    const token = window.localStorage.getItem('react-context-jwt');
+    const user = token ? decodeToken(token) : null;
+    this.setState({ user, isAuthorizing: false });
+  }
+
+  handleSignIn(result) {
+    const { user, token } = result;
+    window.localStorage.setItem('react-context-jwt', token);
+    this.setState({ user });
   }
 
   renderPage() {
@@ -50,11 +63,19 @@ export default class App extends React.Component {
   }
 
   render() {
+    if (this.state.isAuthorizing) return null;
+    const { user, route } = this.state;
+    const { handleSignIn } = this;
+    const contextValue = { user, route, handleSignIn };
     return (
-      <>
-        <Header />
-        {this.renderPage()}
-      </>
+    <AppContext.Provider value={contextValue}>
+        <>
+          <Header />
+          {this.renderPage()}
+        </>
+    </AppContext.Provider>
     );
   }
 }
+
+App.contextType = AppContext;

@@ -98,7 +98,7 @@ export default class EditPost extends React.Component {
     }
 
     return (
-      <div className="container">
+      <>
         <div className="row">
           <div className="col-sm-12">
             <h3 className="heading mt-4">Share With Other Earthlings </h3>
@@ -226,7 +226,7 @@ export default class EditPost extends React.Component {
             </div>
           </div>
         </form>
-      </div>
+      </>
     );
   }
 }

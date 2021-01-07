@@ -10,31 +10,37 @@ import UsersPosts from './pages/users-posts';
 import ViewPost from './pages/view-post';
 import EditPost from './pages/edit-post';
 import NotFound from './pages/not-found';
+import PageContainer from './components/page-container';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
+      userId: null,
       isAuthorizing: true,
       route: parseRoute(window.location.hash)
     };
+
+    this.handleSignIn = this.handleSignIn.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener('hashchange', event => {
+    window.addEventListener('hashchange', () => {
       const change = parseRoute(window.location.hash);
       this.setState({ route: change });
     });
-    const token = window.localStorage.getItem('react-context-jwt');
-    const user = token ? decodeToken(token) : null;
-    this.setState({ user, isAuthorizing: false });
+    const token = window.localStorage.getItem('earth-jwt');
+    console.log('token:', token);
+    const userId = token ? decodeToken(token) : null;
+    this.setState({ userId, isAuthorizing: false });
   }
 
   handleSignIn(result) {
-    const { user, token } = result;
-    window.localStorage.setItem('react-context-jwt', token);
-    this.setState({ user });
+    const { userId, token } = result;
+    console.log(result);
+    window.localStorage.setItem('earth-jwt', token);
+    this.setState({ userId });
+    window.location.hash = '#users-posts';
   }
 
   renderPage() {
@@ -64,14 +70,16 @@ export default class App extends React.Component {
 
   render() {
     if (this.state.isAuthorizing) return null;
-    const { user, route } = this.state;
+    const { userId, route } = this.state;
     const { handleSignIn } = this;
-    const contextValue = { user, route, handleSignIn };
+    const contextValue = { userId, route, handleSignIn };
     return (
     <AppContext.Provider value={contextValue}>
         <>
           <Header />
+          <PageContainer>
           {this.renderPage()}
+          </PageContainer>
         </>
     </AppContext.Provider>
     );

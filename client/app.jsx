@@ -35,9 +35,9 @@ export default class App extends React.Component {
   }
 
   handleSignIn(result) {
-    const { user, token } = result;
+    const { payload, token } = result;
     window.localStorage.setItem('earth-jwt', token);
-    this.setState({ user });
+    this.setState({ user: payload });
     window.location.hash = '#users-posts';
   }
 
@@ -68,6 +68,7 @@ export default class App extends React.Component {
 
   render() {
     if (this.state.isAuthorizing) return null;
+
     const { user, route } = this.state;
     const { handleSignIn } = this;
     const contextValue = { user, route, handleSignIn };

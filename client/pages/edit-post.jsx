@@ -69,8 +69,10 @@ export default class EditPost extends React.Component {
 
   handleSubmit(event) {
     const { token } = this.context;
-    event.preventDefault();
     const formData = new FormData(event.target);
+
+    event.preventDefault();
+
     fetch(`/api/post/${this.props.postId}`, {
       method: 'PUT',
       headers: {

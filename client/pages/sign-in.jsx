@@ -1,12 +1,16 @@
 import React from 'react';
+import Redirect from '../components/redirect';
 import AuthForm from '../components/auth-form';
 import AppContext from '../lib/app-context';
 
 export default class SignIn extends React.Component {
   render() {
-    const { route, handleSignIn } = this.context;
+    const { user, route, handleSignIn } = this.context;
 
-    return (
+    if (user !== null) {
+      return <Redirect to="users-posts" />;
+    } else {
+      return (
       <>
         <div className="heading text-center mt-5">
           <div className="row">
@@ -24,7 +28,8 @@ export default class SignIn extends React.Component {
           key={route.path}
           onSignIn={handleSignIn} />
         </>
-    );
+      );
+    }
   }
 }
 

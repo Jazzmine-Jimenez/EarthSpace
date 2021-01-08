@@ -16,7 +16,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: null,
+      user: null,
       isAuthorizing: true,
       route: parseRoute(window.location.hash)
     };
@@ -30,14 +30,14 @@ export default class App extends React.Component {
       this.setState({ route: change });
     });
     const token = window.localStorage.getItem('earth-jwt');
-    const userId = token ? decodeToken(token) : null;
-    this.setState({ userId, isAuthorizing: false });
+    const user = token ? decodeToken(token) : null;
+    this.setState({ user, isAuthorizing: false });
   }
 
   handleSignIn(result) {
-    const { userId, token } = result;
+    const { user, token } = result;
     window.localStorage.setItem('earth-jwt', token);
-    this.setState({ userId });
+    this.setState({ user });
     window.location.hash = '#users-posts';
   }
 
@@ -68,9 +68,9 @@ export default class App extends React.Component {
 
   render() {
     if (this.state.isAuthorizing) return null;
-    const { userId, route } = this.state;
+    const { user, route } = this.state;
     const { handleSignIn } = this;
-    const contextValue = { userId, route, handleSignIn };
+    const contextValue = { user, route, handleSignIn };
 
     return (
     <AppContext.Provider value={contextValue}>
@@ -84,5 +84,3 @@ export default class App extends React.Component {
     );
   }
 }
-
-App.contextType = AppContext;

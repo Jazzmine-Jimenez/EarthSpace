@@ -63,7 +63,7 @@ export default class EditPost extends React.Component {
   }
 
   handleSubmit(event) {
-    const userId = this.context.userId.userId;
+    const userId = this.context.user.userId;
     event.preventDefault();
     const formData = new FormData(event.target);
     fetch(`/api/post/${this.props.postId}/user/${userId}`, {
@@ -78,7 +78,7 @@ export default class EditPost extends React.Component {
   }
 
   handleDelete() {
-    const userId = this.context.userId.userId;
+    const userId = this.context.user.userId;
     fetch(`/api/post/${this.props.postId}/user/${userId}`, {
       method: 'DELETE'
     })

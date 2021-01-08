@@ -1,5 +1,6 @@
 import React from 'react';
 import AppContext from '../lib/app-context';
+import Redirect from '../components/redirect';
 
 export default class PostForm extends React.Component {
   constructor(props) {
@@ -14,7 +15,7 @@ export default class PostForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const userId = this.context.userId.userId;
+    const userId = this.context.user.userId;
     const formData = new FormData(event.target);
     fetch(`/api/post-form/user/${userId}`, {
       method: 'POST',
@@ -46,6 +47,9 @@ export default class PostForm extends React.Component {
   }
 
   render() {
+    const { user } = this.context;
+    if (user === null) return <Redirect to="" />;
+
     const { imagePreviewUrl } = this.state;
     return (
       <div className="container">

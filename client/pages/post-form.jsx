@@ -15,10 +15,13 @@ export default class PostForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const userId = this.context.user.userId;
+    const { token } = this.context;
     const formData = new FormData(event.target);
-    fetch(`/api/post-form/user/${userId}`, {
+    fetch('/api/post-form', {
       method: 'POST',
+      headers: {
+        'X-Access-Token': `${token}`
+      },
       body: formData
     })
       .then(res => {

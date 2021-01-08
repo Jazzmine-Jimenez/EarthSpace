@@ -18,7 +18,12 @@ export default class EditPost extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/post/${this.props.postId}`)
+    const { token } = this.context;
+    fetch(`/api/post/${this.props.postId}`, {
+      headers: {
+        'X-Access-Token': `${token}`
+      }
+    })
       .then(res => res.json())
       .then(post => this.setState({
         post
@@ -63,11 +68,14 @@ export default class EditPost extends React.Component {
   }
 
   handleSubmit(event) {
-    const userId = this.context.user.userId;
+    const { token } = this.context;
     event.preventDefault();
     const formData = new FormData(event.target);
-    fetch(`/api/post/${this.props.postId}/user/${userId}`, {
+    fetch(`/api/post/${this.props.postId}`, {
       method: 'PUT',
+      headers: {
+        'X-Access-Token': `${token}`
+      },
       body: formData
     })
       .then(res => {
@@ -78,9 +86,12 @@ export default class EditPost extends React.Component {
   }
 
   handleDelete() {
-    const userId = this.context.user.userId;
-    fetch(`/api/post/${this.props.postId}/user/${userId}`, {
-      method: 'DELETE'
+    const { token } = this.context;
+    fetch(`/api/post/${this.props.postId}`, {
+      method: 'DELETE',
+      headers: {
+        'X-Access-Token': `${token}`
+      }
     })
       .then(res => {
         window.location.hash = '#users-posts';
@@ -92,8 +103,8 @@ export default class EditPost extends React.Component {
 
     const { title, content, image } = this.state.post;
     const { imagePreviewChanged } = this.state;
-
     let currentPreviewImage = null;
+
     if (imagePreviewChanged === '') {
       currentPreviewImage = image;
     } else {

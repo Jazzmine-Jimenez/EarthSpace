@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken'); // eslint-disable-line
 const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
+const authorizationMiddleware = require('./authorization-middleware');
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL
@@ -82,61 +83,6 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/post-form/user/:userId', uploadsMiddleware, (req, res, next) => {
-  const { title, content } = req.body;
-  let { tags } = req.body;
-  const userId = req.params.userId;
-  if (!title || !tags || !content) {
-    throw new ClientError(400, 'A title, tags and content are required fields');
-  }
-
-  if (!Array.isArray(tags)) {
-    tags = [tags];
-  }
-
-  const tagsArray = JSON.stringify(tags);
-  const imageUrl = `images/${req.file.filename}`;
-
-  const params = [title, tagsArray, content, imageUrl, userId];
-  const sql = `
-    insert into "Post" ("title", "tags", "content", "image", "userId")
-         values  ($1, $2, $3, $4, $5)
-      returning  *
-  `;
-  db.query(sql, params)
-    .then(results => {
-      res.json(results.rows[0]);
-    })
-    .catch(err => next(err));
-});
-
-app.get('/api/users-posts/:userId', (req, res, next) => {
-  const userId = req.params.userId;
-
-  if (!userId) {
-    throw new ClientError(400, 'UserId is a required fields');
-  }
-
-  const params = [userId];
-  const sql = `
-    select "Post"."title",
-           "Post"."tags",
-           "Post"."content",
-           "Post"."image",
-           "Post"."postId",
-           "Users"."username"
-      from "Post"
-      join "Users" using ("userId")
-     where "userId" = $1
-  order by "postId" desc
-  `;
-  db.query(sql, params)
-    .then(results => {
-      res.json(results.rows);
-    })
-    .catch(err => next(err));
-});
-
 app.get('/api/post/:postId', (req, res, next) => {
   const postId = req.params.postId;
 
@@ -163,14 +109,72 @@ app.get('/api/post/:postId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.put('/api/post/:postId/user/:userId', uploadsMiddleware, (req, res, next) => {
+app.use(authorizationMiddleware);
+
+app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
+  const { title, content } = req.body;
+  let { tags } = req.body;
+  const { userId } = req.user;
+
+  if (!title || !tags || !content) {
+    throw new ClientError(400, 'A title, tags and content are required fields');
+  }
+
+  if (!Array.isArray(tags)) {
+    tags = [tags];
+  }
+
+  const tagsArray = JSON.stringify(tags);
+  const imageUrl = `images/${req.file.filename}`;
+
+  const params = [title, tagsArray, content, imageUrl, userId];
+  const sql = `
+    insert into "Post" ("title", "tags", "content", "image", "userId")
+         values  ($1, $2, $3, $4, $5)
+      returning  *
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/users-posts', (req, res, next) => {
+  const { userId } = req.user;
+
+  if (!userId) {
+    throw new ClientError(400, 'UserId is a required fields');
+  }
+
+  const params = [userId];
+  const sql = `
+    select "Post"."title",
+           "Post"."tags",
+           "Post"."content",
+           "Post"."image",
+           "Post"."postId",
+           "Users"."username"
+      from "Post"
+      join "Users" using ("userId")
+     where "userId" = $1
+  order by "postId" desc
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.put('/api/post/:postId', uploadsMiddleware, (req, res, next) => {
   const postId = req.params.postId;
-  const userId = req.params.userId;
+  const { userId } = req.user;
   const { title, content } = req.body;
   let { tags } = req.body;
 
-  if (!postId || !userId) {
-    throw new ClientError(400, 'userId and postId is a required fields');
+  if (!postId) {
+    throw new ClientError(400, 'PostId is a required fields');
   }
 
   if (!Array.isArray(tags)) {
@@ -202,12 +206,12 @@ app.put('/api/post/:postId/user/:userId', uploadsMiddleware, (req, res, next) =>
     .catch(err => next(err));
 });
 
-app.delete('/api/post/:postId/user/:userId', (req, res, next) => {
+app.delete('/api/post/:postId', (req, res, next) => {
   const postId = req.params.postId;
-  const userId = req.params.userId;
+  const { userId } = req.user;
 
-  if (!postId || !userId) {
-    throw new ClientError(400, 'userId and postId is a required fields');
+  if (!postId) {
+    throw new ClientError(400, 'PostId is a required fields');
   }
 
   const params = [postId, userId];

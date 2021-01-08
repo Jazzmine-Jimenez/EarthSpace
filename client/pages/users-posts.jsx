@@ -11,12 +11,16 @@ export default class UsersPosts extends React.Component {
   }
 
   componentDidMount() {
-    const { user } = this.context;
+    const { user, token } = this.context;
+
     if (user === null) {
       return null;
     } else {
-      const userId = this.context.user.userId;
-      fetch(`/api/users-posts/${userId}`)
+      fetch('/api/users-posts', {
+        headers: {
+          'X-Access-Token': `${token}`
+        }
+      })
         .then(res => res.json())
         .then(posts => {
           this.setState({ posts });

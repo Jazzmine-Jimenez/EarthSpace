@@ -160,6 +160,7 @@ app.get('/api/users-posts', (req, res, next) => {
      where "userId" = $1
   order by "postId" desc
   `;
+
   db.query(sql, params)
     .then(results => {
       res.json(results.rows);

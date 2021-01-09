@@ -12,7 +12,8 @@ const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL
 });
 
-const app = express();
+// const app = express();
+const app = express(staticMiddleware);
 
 const jsonMiddleware = express.json();
 app.use(jsonMiddleware);

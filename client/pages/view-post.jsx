@@ -1,4 +1,6 @@
 import React from 'react';
+import AppContext from '../lib/app-context';
+import Redirect from '../components/redirect';
 
 export default class ViewPost extends React.Component {
   constructor(props) {
@@ -16,10 +18,15 @@ export default class ViewPost extends React.Component {
 
   render() {
     if (!this.state.post) return null;
-    const { title, content, tags, image, username, postId } = this.state.post;
-    const tagsString = tags.join(', ');
+    const { user } = this.context;
 
-    return (
+    if (user === null) {
+      return <Redirect to="" />;
+    } else {
+      const { title, content, tags, image, username, postId } = this.state.post;
+      const tagsString = tags.join(', ');
+
+      return (
       <div className="container">
         <h3 className="title heading my-sm-4">What you&apos;ve Shared with Other Earthlings </h3>
         <div className="post-container shadow p-3 mb-4 bg-white rounded">
@@ -51,6 +58,9 @@ export default class ViewPost extends React.Component {
           </div>
         </div>
       </div>
-    );
+      );
+    }
   }
 }
+
+ViewPost.contextType = AppContext;

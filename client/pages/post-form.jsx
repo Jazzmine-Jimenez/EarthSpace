@@ -1,4 +1,6 @@
 import React from 'react';
+import AppContext from '../lib/app-context';
+import Redirect from '../components/redirect';
 
 export default class PostForm extends React.Component {
   constructor(props) {
@@ -13,9 +15,13 @@ export default class PostForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    const { token } = this.context;
     const formData = new FormData(event.target);
     fetch('/api/post-form', {
       method: 'POST',
+      headers: {
+        'X-Access-Token': `${token}`
+      },
       body: formData
     })
       .then(res => {
@@ -44,6 +50,9 @@ export default class PostForm extends React.Component {
   }
 
   render() {
+    const { user } = this.context;
+    if (user === null) return <Redirect to="" />;
+
     const { imagePreviewUrl } = this.state;
     return (
       <div className="container">
@@ -128,3 +137,5 @@ export default class PostForm extends React.Component {
     );
   }
 }
+
+PostForm.contextType = AppContext;

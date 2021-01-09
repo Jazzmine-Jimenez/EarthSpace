@@ -1,4 +1,5 @@
 import React from 'react';
+import AppContext from '../lib/app-context';
 
 export default class EditPost extends React.Component {
   constructor(props) {
@@ -17,7 +18,12 @@ export default class EditPost extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/post/${this.props.postId}`)
+    const { token } = this.context;
+    fetch(`/api/post/${this.props.postId}`, {
+      headers: {
+        'X-Access-Token': `${token}`
+      }
+    })
       .then(res => res.json())
       .then(post => this.setState({
         post
@@ -62,10 +68,16 @@ export default class EditPost extends React.Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    const { token } = this.context;
     const formData = new FormData(event.target);
-    fetch(`/api/post/${this.props.postId}/user/1`, {
+
+    event.preventDefault();
+
+    fetch(`/api/post/${this.props.postId}`, {
       method: 'PUT',
+      headers: {
+        'X-Access-Token': `${token}`
+      },
       body: formData
     })
       .then(res => {
@@ -76,8 +88,12 @@ export default class EditPost extends React.Component {
   }
 
   handleDelete() {
-    fetch(`/api/post/${this.props.postId}/user/1`, {
-      method: 'DELETE'
+    const { token } = this.context;
+    fetch(`/api/post/${this.props.postId}`, {
+      method: 'DELETE',
+      headers: {
+        'X-Access-Token': `${token}`
+      }
     })
       .then(res => {
         window.location.hash = '#users-posts';
@@ -89,8 +105,8 @@ export default class EditPost extends React.Component {
 
     const { title, content, image } = this.state.post;
     const { imagePreviewChanged } = this.state;
-
     let currentPreviewImage = null;
+
     if (imagePreviewChanged === '') {
       currentPreviewImage = image;
     } else {
@@ -98,7 +114,7 @@ export default class EditPost extends React.Component {
     }
 
     return (
-      <div className="container">
+      <>
         <div className="row">
           <div className="col-sm-12">
             <h3 className="heading mt-4">Share With Other Earthlings </h3>
@@ -226,7 +242,9 @@ export default class EditPost extends React.Component {
             </div>
           </div>
         </form>
-      </div>
+      </>
     );
   }
 }
+
+EditPost.contextType = AppContext;

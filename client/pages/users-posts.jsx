@@ -1,4 +1,6 @@
 import React from 'react';
+import AppContext from '../lib/app-context';
+import Redirect from '../components/redirect';
 
 export default class UsersPosts extends React.Component {
   constructor(props) {
@@ -9,14 +11,28 @@ export default class UsersPosts extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/users-posts/1')
-      .then(res => res.json())
-      .then(posts => {
-        this.setState({ posts });
-      });
+    const { user, token } = this.context;
+
+    if (user === null) {
+      return null;
+    } else {
+      fetch('/api/users-posts', {
+        headers: {
+          'X-Access-Token': `${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(posts => {
+          this.setState({ posts });
+        });
+    }
   }
 
   render() {
+    const user = this.context.user;
+
+    if (user === null) return <Redirect to="" />;
+
     return (
       <div className="container">
         <h3 className="heading my-sm-4">What you&apos;ve Shared with Other Earthlings </h3>
@@ -29,7 +45,7 @@ export default class UsersPosts extends React.Component {
                 );
               })
             }
-          </div>
+      </div>
     );
   }
 }
@@ -54,6 +70,8 @@ function OnePost(props) {
       </div>
       </div>
     </div>
-    </a>
+  </a>
   );
 }
+
+UsersPosts.contextType = AppContext;

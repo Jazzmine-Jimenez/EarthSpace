@@ -11,10 +11,10 @@ export default function Header(props) {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="#post-form">Create post</a>
+              <a className="nav-link" aria-current="page" href="#post-form">Post</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#users-posts">View posts</a>
+              <a className="nav-link" href="#users-posts">My posts</a>
             </li>
           </ul>
         </div>

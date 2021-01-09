@@ -25,7 +25,7 @@ export default class SignUp extends React.Component {
     })
       .then(res => {
         event.target.reset();
-        window.location.hash = '#users-posts';
+        window.location.hash = '#sign-in';
       })
       .catch(err => console.error(err));
   }

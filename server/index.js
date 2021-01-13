@@ -7,15 +7,14 @@ const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
 const authorizationMiddleware = require('./authorization-middleware');
+const app = express();
+const jsonMiddleware = express.json();
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL
 });
 
-// const app = express();
-const app = express(staticMiddleware);
-
-const jsonMiddleware = express.json();
+app.use(staticMiddleware);
 app.use(jsonMiddleware);
 
 app.post('/api/auth/sign-up', (req, res, next) => {
@@ -230,8 +229,6 @@ app.delete('/api/post/:postId', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-
-app.use(staticMiddleware);
 
 app.listen(process.env.PORT, () => {
   // eslint-disable-next-line no-console

@@ -31,7 +31,7 @@ export default class UsersPosts extends React.Component {
   render() {
     const user = this.context.user;
 
-    if (user === null) return <Redirect to="" />;
+    if (!user) return <Redirect to="" />;
 
     return (
       <div className="container">

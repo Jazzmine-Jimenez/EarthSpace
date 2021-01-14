@@ -27,9 +27,9 @@ export default class ViewPost extends React.Component {
       const tagsString = tags.join(', ');
 
       return (
-      <div className="container">
+        <>
         <h3 className="title heading my-sm-4">What you&apos;ve Shared with Other Earthlings </h3>
-        <div className="post-container shadow p-3 mb-4 bg-white rounded">
+          <div className="shadow p-3 mb-4 bg-white rounded">
           <div className="row align-items-center">
             <div className="col-sm-7 py-sm-5 px-sm-5">
               <h3 className="title mb-sm-4"> {title} </h3>
@@ -57,7 +57,7 @@ export default class ViewPost extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+        </>
       );
     }
   }

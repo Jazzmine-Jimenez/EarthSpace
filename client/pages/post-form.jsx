@@ -55,26 +55,26 @@ export default class PostForm extends React.Component {
 
     const { imagePreviewUrl } = this.state;
     return (
-      <div className="container">
+      <>
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="heading mt-sm-4">Share With Other Earthlings </h3>
+            <h3 className="heading mt-4">Share With Other Earthlings </h3>
           </div>
         </div>
         <form id="post-form" onSubmit={this.handleSubmit} className="text-muted">
           <div className="row">
             <div className="col-sm-12 mb-3">
-              <label htmlFor="title">Title: </label>
+              <label className="text-body" htmlFor="title">Title: </label>
               <input required type="text" className="form-control" name="title" id="title"/>
             </div>
           </div>
           <div className="form-group">
             <div className="row">
               <div className="col-sm-12">
-                <label>Tags (Choose all that apply):</label>
+                <label className="text-body">Tags (Choose all that apply):</label>
               </div>
             </div>
-            <div className="tags-container ml-sm-3">
+            <div className="tags-container ms-3">
               <div className="row">
                 <div className="col-sm-4 ">
                   <label className="tags">
@@ -113,27 +113,27 @@ export default class PostForm extends React.Component {
           </div>
           <div className="row form-group">
             <div className="col-sm-12 mb-3">
-              <label htmlFor="content">What would you like to share?</label>
+              <label className="text-body" htmlFor="content">What would you like to share?</label>
               <textarea required className="form-control" name="content" id="content" cols="30" rows="10"></textarea>
             </div>
           </div>
           <div className="row form-group">
             <div className="col-sm-12">
-              <label> Upload image: </label>
+              <label className="text-body"> Upload image: </label>
             </div>
           </div>
-          <div className="row border rounded py-sm-3 align-items-center">
-            <div className="col-sm-6">
-              <label htmlFor="image" className="mx-sm-3"> Image: </label>
+          <div className="row border rounded py-3 align-items-center image-preview-container">
+            <div className="col-sm-7">
+              <label htmlFor="image" className="mx-3"> Image: </label>
               <input required onChange={this.handleChange} type="file" name="image" id="image" />
             </div>
-            <div className="col-sm-6">
-              <img className="image-preview border img-thumbnail rounded" src={imagePreviewUrl} alt="placeholder" />
+            <div className="col-sm-5 mh-100 d-flex justify-content-center">
+              <img className="image border rounded my-5 mw-100" src={imagePreviewUrl} alt="placeholder" />
             </div>
           </div>
-            <button type="submit" className="btn button my-sm-3">Post</button>
+            <button type="submit" className="btn button my-3">Post</button>
         </form>
-      </div>
+      </>
     );
   }
 }

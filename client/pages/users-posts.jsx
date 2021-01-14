@@ -34,18 +34,18 @@ export default class UsersPosts extends React.Component {
     if (!user) return <Redirect to="" />;
 
     return (
-      <div className="container">
-        <h3 className="heading my-sm-4">What you&apos;ve Shared with Other Earthlings </h3>
-            {
-              this.state.posts.map(post => {
-                return (
-                  <div key={post.postId}>
-                    <OnePost post={post} />
-                  </div>
-                );
-              })
-            }
-      </div>
+      <>
+        <h3 className="heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
+        {
+          this.state.posts.map(post => {
+            return (
+              <div key={post.postId}>
+                <OnePost post={post} />
+              </div>
+            );
+          })
+        }
+      </>
     );
   }
 }
@@ -55,17 +55,17 @@ function OnePost(props) {
   const tagsString = tags.join(', ');
 
   return (
-    <a href={`#post?postId=${postId}`} className="anchor-styling text-muted post-container">
-      <div className="shadow p-3 mb-4 bg-white rounded">
+    <a href={`#post?postId=${postId}`} className="anchor-styling text-muted ">
+      <div className="shadow p-3 mb-4 bg-white rounded ">
       <div className="row align-items-center">
       <div className="col-sm-7 py-sm-5 px-sm-5">
-        <h4 className="title"> { title } </h4>
-        <p className="sub-title"> { tagsString } </p>
-          <h6><i className="fas fa-user"></i> { username } </h6>
+            <h5 className="text-body"> {title} </h5>
+            <p className="sub-title fw-lighter"> <i className="fas fa-hashtag me-1 "></i>{ tagsString } </p>
+            <h6 className="fw-lighter"><i className="fas fa-user"></i> { username } </h6>
       </div>
-          <div className="col-sm-5 image-container mh-100">
-            <img className="image border rounded my-5 mw-100" src={ image } alt="" />
-      </div>
+        <div className="col-sm-5 mh-100 d-flex justify-content-center">
+          <img className="image border rounded my-5 mw-100" src={ image } alt="" />
+        </div>
       </div>
     </div>
   </a>

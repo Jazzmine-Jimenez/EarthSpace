@@ -123,7 +123,7 @@ export default class EditPost extends React.Component {
         <form id="post-form" onSubmit={this.handleSubmit} className="text-muted">
           <div className="row">
             <div className="col-sm-12 mb-3">
-              <label htmlFor="title">Title: </label>
+              <label className="text-body" htmlFor="title">Title: </label>
               <input required type="text" className="form-control" name="title"
                 id="title" onChange={this.handleChange} value={title} />
             </div>
@@ -131,7 +131,7 @@ export default class EditPost extends React.Component {
           <div className="form-group">
             <div className="row">
               <div className="col-sm-12">
-                <label>Tags (Choose all that apply):</label>
+                <label className="text-body">Tags (Choose all that apply):</label>
               </div>
             </div>
             <div className="tags-container ml-3">
@@ -191,24 +191,24 @@ export default class EditPost extends React.Component {
           </div>
           <div className="row form-group">
             <div className="col-sm-12 mb-3">
-              <label htmlFor="content">What would you like to share?</label>
+              <label className="text-body" htmlFor="content">What would you like to share?</label>
               <textarea required className="form-control" name="content"
                 id="content" onChange={this.handleChange} value={content} cols="30" rows="10"></textarea>
             </div>
           </div>
           <div className="row form-group">
             <div className="col-sm-12">
-              <label> Upload image: </label>
+              <label className="text-body"> Upload image: </label>
             </div>
           </div>
-          <div className="row border rounded py-3 align-items-center">
-            <div className="col-sm-6">
+          <div className="row border rounded py-3 align-items-center image-preview-container">
+            <div className="col-sm-7">
               <label htmlFor="image" className="mx-3"> Image: </label>
               <input onChange={this.handleImageChange} type="file"
                 name="image" id="image"/>
             </div>
-            <div className="col-sm-6">
-              <img className="image-preview border img-thumbnail rounded"
+            <div className="col-sm-5 mh-100 d-flex justify-content-center">
+              <img className="image-preview border roundedimage border rounded my-5 mw-100"
               src={currentPreviewImage} alt="placeholder" />
             </div>
           </div>
@@ -216,7 +216,7 @@ export default class EditPost extends React.Component {
             <div className="col-12 my-3">
               <button type="submit" className="btn btn-lg button me-3">
                 Update</button>
-              <button type="button" className="btn btn-lg button"
+              <button type="button" className="btn btn-lg btn-secondary"
               data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Delete </button>
             </div>

@@ -58,15 +58,13 @@ function OnePost(props) {
     <a href={`#post?postId=${postId}`} className="anchor-styling text-muted post-container">
       <div className="shadow p-3 mb-4 bg-white rounded">
       <div className="row align-items-center">
-      <div className="col-sm-6 py-sm-5 px-sm-5">
+      <div className="col-sm-7 py-sm-5 px-sm-5">
         <h4 className="title"> { title } </h4>
         <p className="sub-title"> { tagsString } </p>
           <h6><i className="fas fa-user"></i> { username } </h6>
       </div>
-      <div className="col-sm-6">
-        <div className="image-container pr-sm-5">
-          <img className="photo border img-thumbnail rounded my-sm-5" src={ image } alt="" />
-        </div>
+          <div className="col-sm-5 image-container mh-100">
+            <img className="image border rounded my-5 mw-100" src={ image } alt="" />
       </div>
       </div>
     </div>

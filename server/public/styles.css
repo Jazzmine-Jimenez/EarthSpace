@@ -31,3 +31,7 @@ body {
 .sign-up-container {
   max-width: 600px;
 }
+
+.image {
+  object-fit: contain;
+}

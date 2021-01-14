@@ -23,6 +23,7 @@ export default class App extends React.Component {
     };
 
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   componentDidMount() {
@@ -43,6 +44,11 @@ export default class App extends React.Component {
       token: token
     });
     window.location.hash = '#users-posts';
+  }
+
+  handleSignOut() {
+    window.localStorage.removeItem('earth-jwt');
+    this.setState({ user: null });
   }
 
   renderPage() {
@@ -74,8 +80,8 @@ export default class App extends React.Component {
     if (this.state.isAuthorizing) return null;
 
     const { user, route, token } = this.state;
-    const { handleSignIn } = this;
-    const contextValue = { user, token, route, handleSignIn };
+    const { handleSignIn, handleSignOut } = this;
+    const contextValue = { user, token, route, handleSignIn, handleSignOut };
 
     return (
     <AppContext.Provider value={contextValue}>

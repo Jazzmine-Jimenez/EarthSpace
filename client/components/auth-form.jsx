@@ -5,10 +5,12 @@ export default class AuthForm extends React.Component {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      signinButton: 'Sign-in'
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDemoSignIn = this.handleDemoSignIn.bind(this);
   }
 
   handleChange(event) {
@@ -33,6 +35,14 @@ export default class AuthForm extends React.Component {
       });
   }
 
+  handleDemoSignIn(event) {
+    this.setState({
+      username: 'EarthSpaceLover',
+      password: 'password',
+      signinButton: 'Sign into Demo Account'
+    });
+  }
+
   render() {
     return (
       <div className="sign-up-container m-4 mx-auto">
@@ -52,7 +62,7 @@ export default class AuthForm extends React.Component {
             </div>
             <div className="row">
               <div className="col-12 mb-3">
-                <button type="submit" className="btn button btn-lg w-100"> Sign-in </button>
+                <button type="submit" className="btn button btn-lg w-100"> {this.state.signinButton} </button>
               </div>
             </div>
             <hr />
@@ -62,6 +72,14 @@ export default class AuthForm extends React.Component {
                   <button type="button" className="btn btn-dark btn-lg w-100"> Create An Account </button>
                 </a>
               </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12 mt-3 text-center">
+              <p>Don&apos;t want an account just yet? I respect that. <br/>
+                <a className="btn text-decoration-underline" onClick={this.handleDemoSignIn}> Sign into Demo Account </a>
+              </p>
+
             </div>
           </div>
         </form>

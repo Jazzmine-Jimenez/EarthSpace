@@ -7,7 +7,9 @@ export default class EditPost extends React.Component {
     this.state = {
       post: null,
       file: '',
-      imagePreviewChanged: ''
+      imagePreviewChanged: '',
+      updateButton: 'btn btn-lg button me-3',
+      deleteButton: 'btn btn-lg btn-secondary'
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,9 +21,17 @@ export default class EditPost extends React.Component {
 
   componentDidMount() {
     const { token } = this.context;
+
+    if (this.props.postId === '1') {
+      this.setState({
+        updateButton: 'btn btn-lg button me-3 disabled',
+        deleteButton: 'btn btn-lg btn-secondary disabled'
+      });
+    }
+
     fetch(`/api/post/${this.props.postId}`, {
       headers: {
-        'X-Access-Token': `${token}`
+        'X-Access-Token': token
       }
     })
       .then(res => res.json())
@@ -76,7 +86,7 @@ export default class EditPost extends React.Component {
     fetch(`/api/post/${this.props.postId}`, {
       method: 'PUT',
       headers: {
-        'X-Access-Token': `${token}`
+        'X-Access-Token': token
       },
       body: formData
     })
@@ -92,7 +102,7 @@ export default class EditPost extends React.Component {
     fetch(`/api/post/${this.props.postId}`, {
       method: 'DELETE',
       headers: {
-        'X-Access-Token': `${token}`
+        'X-Access-Token': token
       }
     })
       .then(res => {
@@ -214,9 +224,9 @@ export default class EditPost extends React.Component {
           </div>
           <div className="row">
             <div className="col-12 my-3">
-              <button type="submit" className="btn btn-lg button me-3">
+              <button type="submit" className={this.state.updateButton}>
                 Update</button>
-              <button type="button" className="btn btn-lg btn-secondary"
+              <button type="button" className={this.state.deleteButton}
               data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Delete </button>
             </div>

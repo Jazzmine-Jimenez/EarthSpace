@@ -16,18 +16,6 @@ body {
   width: 100px;
 }
 
-.anchor-styling {
-  text-decoration: none;
-}
-
-.edit-icon {
-  font-size: 1.2rem;
-}
-
-.test {
-  background-color: blue;
-}
-
 .post-container {
   max-width: 800px;
 }

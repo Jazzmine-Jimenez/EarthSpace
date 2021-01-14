@@ -55,7 +55,7 @@ function OnePost(props) {
   const tagsString = tags.join(', ');
 
   return (
-    <a href={`#post?postId=${postId}`} className="anchor-styling text-muted ">
+    <a href={`#post?postId=${postId}`} className="text-decoration-none text-muted ">
       <div className="shadow p-3 mb-4 bg-white rounded ">
       <div className="row align-items-center">
       <div className="col-sm-7 py-sm-5 px-sm-5">

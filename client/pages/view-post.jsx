@@ -20,7 +20,7 @@ export default class ViewPost extends React.Component {
     if (!this.state.post) return null;
     const { user } = this.context;
 
-    if (user === null) {
+    if (!user) {
       return <Redirect to="" />;
     } else {
       const { title, content, tags, image, username, postId } = this.state.post;

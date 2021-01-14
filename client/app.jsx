@@ -48,7 +48,10 @@ export default class App extends React.Component {
 
   handleSignOut() {
     window.localStorage.removeItem('earth-jwt');
-    this.setState({ user: null });
+    this.setState({
+      user: null,
+      token: null
+    });
   }
 
   renderPage() {

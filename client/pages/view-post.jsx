@@ -33,17 +33,15 @@ export default class ViewPost extends React.Component {
           <div className="row align-items-center">
             <div className="col-sm-7 py-sm-5 px-sm-5">
               <h3 className="title mb-sm-4"> {title} </h3>
+              <p className="sub-title">
+                <i className="fas fa-hashtag mx-sm-1"></i>
+                {tagsString} </p>
               <p> {content} </p>
             </div>
-            <div className="col-sm-5">
-              <div className="image-container">
-                <img className="photo border img-thumbnail rounded"
+              <div className="col-sm-5 mh-100 d-flex justify-content-center">
+                <img className="image border rounded my-5 mw-100"
                   src={image} alt="post image" />
-                <p className="sub-title mx-sm-2">
-                  <i className="fas fa-hashtag mx-sm-1"></i>
-                  {tagsString} </p>
               </div>
-            </div>
           </div>
           <hr />
           <div className="row py-3 px-5 text-muted">

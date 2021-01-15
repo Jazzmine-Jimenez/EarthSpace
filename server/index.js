@@ -109,26 +109,6 @@ app.get('/api/post/:postId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/likes/:userId/post/:postId', (req, res, next) => {
-  // const { userId } = req.user;
-  const userId = req.params.userId;
-  const postId = req.params.postId;
-  console.log(userId);
-  console.log(postId);
-
-  const params = [postId, userId];
-  const sql = `
-     insert into "likes" ("postId", "userId")
-          values ($1, $2)
-       returning *
-  `;
-  db.query(sql, params)
-    .then(results => {
-      res.json(results.rows);
-    })
-    .catch(err => next(err));
-});
-
 app.delete('/api/likes/:userId/post/:postId', (req, res, next) => {
   // const { userId } = req.user;
   const userId = req.params.userId;
@@ -285,6 +265,25 @@ app.delete('/api/post/:postId', (req, res, next) => {
   db.query(sql, params)
     .then(results => {
       res.json(results.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/likes/post/:postId', (req, res, next) => {
+  const { userId } = req.user;
+  const postId = req.params.postId;
+  console.log(userId);
+  console.log(postId);
+
+  const params = [postId, userId];
+  const sql = `
+     insert into "likes" ("postId", "userId")
+          values ($1, $2)
+       returning *
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows);
     })
     .catch(err => next(err));
 });

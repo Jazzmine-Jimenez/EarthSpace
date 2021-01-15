@@ -5,8 +5,10 @@ import Redirect from '../components/redirect';
 export default class PostForm extends React.Component {
   constructor(props) {
     super(props);
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+
     this.state = {
       file: '',
       imagePreviewUrl: 'placeholder-image.png'

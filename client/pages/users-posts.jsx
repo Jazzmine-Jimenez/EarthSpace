@@ -5,6 +5,9 @@ import Redirect from '../components/redirect';
 export default class UsersPosts extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleLikeClick = this.handleLikeClick.bind(this);
+
     this.state = {
       posts: []
     };
@@ -13,19 +16,36 @@ export default class UsersPosts extends React.Component {
   componentDidMount() {
     const { user, token } = this.context;
 
-    if (user === null) {
-      return null;
-    } else {
-      fetch('/api/users-posts', {
-        headers: {
-          'X-Access-Token': `${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(posts => {
-          this.setState({ posts });
-        });
-    }
+    if (!user) return <Redirect to="" />;
+
+    fetch('/api/users-posts', {
+      headers: {
+        'X-Access-Token': token
+      }
+    })
+      .then(res => res.json())
+      .then(posts => {
+        this.setState({ posts });
+      });
+  }
+
+  handleLikeClick(postId) {
+    console.log('inside');
+
+    const { user, token } = this.context;
+
+    if (!user) return;
+    console.log(postId);
+    console.log(this.props);
+    console.log(this.state);
+
+    // fetch(`/api/likes/post/${this.props.postId}`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'X-Access-Token': token
+    //   }
+    // })
+    //   .then(res => res.json());
   }
 
   render() {
@@ -40,7 +60,7 @@ export default class UsersPosts extends React.Component {
           this.state.posts.map(post => {
             return (
               <div key={post.postId}>
-                <OnePost post={post} />
+                <OnePost post={post} handleLikeClick={this.handleLikeClick}/>
               </div>
             );
           })
@@ -52,6 +72,7 @@ export default class UsersPosts extends React.Component {
 
 function OnePost(props) {
   const { title, tags, image, username, postId } = props.post;
+
   const tagsString = tags.join(', ');
 
   return (
@@ -71,7 +92,7 @@ function OnePost(props) {
       <hr/>
       <div className="row py-3 px-5 text-muted">
         <div className="col-sm-6">
-          <p><i className="fas fa-globe-americas"></i> Like </p>
+          <p onClick={props.handleLikeClick} postId={postId}><i className="fas fa-globe-americas"></i> Like </p>
         </div>
         <div className="col-sm-6 text-sm-end">
           <p ><i className="fas fa-user"></i> {username} </p>

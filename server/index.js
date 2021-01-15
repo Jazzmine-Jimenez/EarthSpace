@@ -14,8 +14,8 @@ const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL
 });
 
-app.use(staticMiddleware);
 app.use(jsonMiddleware);
+app.use(staticMiddleware);
 
 app.post('/api/auth/sign-up', (req, res, next) => {
   const { firstName, lastName, username, password } = req.body;

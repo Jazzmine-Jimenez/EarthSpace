@@ -14,8 +14,8 @@ const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL
 });
 
-app.use(staticMiddleware);
 app.use(jsonMiddleware);
+app.use(staticMiddleware);
 
 app.post('/api/auth/sign-up', (req, res, next) => {
   const { firstName, lastName, username, password } = req.body;
@@ -105,6 +105,65 @@ app.get('/api/post/:postId', (req, res, next) => {
   db.query(sql, params)
     .then(results => {
       res.json(results.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/likes/:userId/post/:postId', (req, res, next) => {
+  // const { userId } = req.user;
+  const userId = req.params.userId;
+  const postId = req.params.postId;
+  console.log(userId);
+  console.log(postId);
+
+  const params = [postId, userId];
+  const sql = `
+     insert into "likes" ("postId", "userId")
+          values ($1, $2)
+       returning *
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/likes/:userId/post/:postId', (req, res, next) => {
+  // const { userId } = req.user;
+  const userId = req.params.userId;
+  const postId = req.params.postId;
+  console.log(userId);
+  console.log(postId);
+
+  const params = [postId, userId];
+  const sql = `
+     delete from "likes"
+           where "postId" = $1
+             and "userId" = $2
+       returning *
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/likes/post/:postId', (req, res, next) => {
+  // const { userId } = req.user;
+  // const userId = req.params.userId;
+  const postId = req.params.postId;
+
+  const params = [postId];
+  const sql = `
+     select count("userId")
+       from "likes"
+      where "postId" = $1
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows);
     })
     .catch(err => next(err));
 });

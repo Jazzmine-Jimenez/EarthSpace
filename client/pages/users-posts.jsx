@@ -9,7 +9,8 @@ export default class UsersPosts extends React.Component {
     this.handleLikeClick = this.handleLikeClick.bind(this);
 
     this.state = {
-      posts: []
+      posts: [],
+      likes: []
     };
   }
 
@@ -27,28 +28,48 @@ export default class UsersPosts extends React.Component {
       .then(posts => {
         this.setState({ posts });
       });
+
+    fetch('/api/likes', {
+      headers: {
+        'X-Access-Token': token
+      }
+    })
+      .then(res => res.json())
+      .then(likes => {
+        this.setState({ likes });
+      });
+
   }
 
-  handleLikeClick(postId) {
-    console.log('inside');
-
+  handleLikeClick(event) {
     const { user, token } = this.context;
-
     if (!user) return;
-    console.log(postId);
-    console.log(this.props);
-    console.log(this.state);
 
-    // fetch(`/api/likes/post/${this.props.postId}`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'X-Access-Token': token
-    //   }
-    // })
-    //   .then(res => res.json());
+    const postId = event.target.getAttribute('data-post-id');
+    console.log('postId:', postId);
+
+    this.state.likes.map(like => {
+      if (like.postId === postId) {
+        return console.log('already liked');
+      } else {
+        return console.log('liked for the first time');
+      }
+
+    });
+
+    fetch(`/api/likes/post/${postId}`, {
+      method: 'POST',
+      headers: {
+        'X-Access-Token': token
+      }
+    })
+      .then(res => {
+        res.json();
+      });
   }
 
   render() {
+
     const user = this.context.user;
 
     if (!user) return <Redirect to="" />;
@@ -58,9 +79,13 @@ export default class UsersPosts extends React.Component {
         <h3 className="heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
         {
           this.state.posts.map(post => {
+
             return (
               <div key={post.postId}>
-                <OnePost post={post} handleLikeClick={this.handleLikeClick}/>
+                <OnePost
+                  post={post}
+                  handleLikeClick={this.handleLikeClick}
+                />
               </div>
             );
           })
@@ -77,7 +102,7 @@ function OnePost(props) {
 
   return (
     <div className="shadow p-3 mb-4 bg-white rounded ">
-      <a href={`#post?postId=${postId}`} className="text-decoration-none text-muted ">
+      <a href={`#post?postId=${postId}`} className="text-decoration-none text-muted">
         <div className="row align-items-center">
           <div className="col-sm-7 py-sm-5 px-sm-5">
             <h5 className="text-body"> {title} </h5>
@@ -92,10 +117,12 @@ function OnePost(props) {
       <hr/>
       <div className="row py-3 px-5 text-muted">
         <div className="col-sm-6">
-          <p onClick={props.handleLikeClick} onLoad={postId}><i className="fas fa-globe-americas"></i> Like </p>
+          <p><i onClick={props.handleLikeClick} data-post-id={postId}
+            className="fas fa-globe-americas"></i> Like
+          </p>
         </div>
         <div className="col-sm-6 text-sm-end">
-          <p ><i className="fas fa-user"></i> {username} </p>
+          <p><i className="fas fa-user"></i> {username} </p>
         </div>
       </div>
     </div>

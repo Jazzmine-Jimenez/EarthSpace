@@ -11,7 +11,10 @@ const app = express();
 const jsonMiddleware = express.json();
 
 const db = new pg.Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 app.use(jsonMiddleware);
@@ -122,24 +125,6 @@ app.delete('/api/likes/:userId/post/:postId', (req, res, next) => {
            where "postId" = $1
              and "userId" = $2
        returning *
-  `;
-  db.query(sql, params)
-    .then(results => {
-      res.json(results.rows);
-    })
-    .catch(err => next(err));
-});
-
-app.get('/api/likes/post/:postId', (req, res, next) => {
-  // const { userId } = req.user;
-  // const userId = req.params.userId;
-  const postId = req.params.postId;
-
-  const params = [postId];
-  const sql = `
-     select count("userId")
-       from "likes"
-      where "postId" = $1
   `;
   db.query(sql, params)
     .then(results => {
@@ -272,8 +257,6 @@ app.delete('/api/post/:postId', (req, res, next) => {
 app.post('/api/likes/post/:postId', (req, res, next) => {
   const { userId } = req.user;
   const postId = req.params.postId;
-  console.log(userId);
-  console.log(postId);
 
   const params = [postId, userId];
   const sql = `
@@ -283,6 +266,23 @@ app.post('/api/likes/post/:postId', (req, res, next) => {
   `;
   db.query(sql, params)
     .then(results => {
+      res.json(results.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/likes', (req, res, next) => {
+  const { userId } = req.user;
+
+  const params = [userId];
+  const sql = `
+     select "postId"
+       from "likes"
+      where "userId" = $1
+  `;
+  db.query(sql, params)
+    .then(results => {
+      console.log(results.rows);
       res.json(results.rows);
     })
     .catch(err => next(err));

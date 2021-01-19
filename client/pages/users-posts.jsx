@@ -1,6 +1,7 @@
 import React from 'react';
 import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
+import { post } from 'jquery';
 
 export default class UsersPosts extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ export default class UsersPosts extends React.Component {
 
   componentDidMount() {
     const { user, token } = this.context;
+    const likesArray = [];
 
     if (!user) return <Redirect to="" />;
 
@@ -36,26 +38,29 @@ export default class UsersPosts extends React.Component {
     })
       .then(res => res.json())
       .then(likes => {
-        this.setState({ likes });
+        likes.forEach(like => likesArray.push(like.postId));
+        console.log(likesArray);
+        this.setState({ likes: likesArray });
       });
 
   }
 
   handleLikeClick(event) {
     const { user, token } = this.context;
+    const { likes } = this.state;
+
     if (!user) return;
 
-    const postId = event.target.getAttribute('data-post-id');
-    console.log('postId:', postId);
+    const postId = Number(event.target.getAttribute('data-post-id'));
 
-    this.state.likes.map(like => {
-      if (like.postId === postId) {
-        return console.log('already liked');
-      } else {
-        return console.log('liked for the first time');
-      }
+    if (likes.includes(postId)) {
+      console.log('already liked');
+      return;
+    }
+    console.log('updated like Array');
 
-    });
+    likes.push(postId);
+    this.setState({ likes });
 
     fetch(`/api/likes/post/${postId}`, {
       method: 'POST',
@@ -71,6 +76,7 @@ export default class UsersPosts extends React.Component {
   render() {
 
     const user = this.context.user;
+    console.log(this.state.likes);
 
     if (!user) return <Redirect to="" />;
 

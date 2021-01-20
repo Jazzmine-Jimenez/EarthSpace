@@ -233,6 +233,57 @@ app.delete('/api/post/:postId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/likes/post/:postId', (req, res, next) => {
+  const { userId } = req.user;
+  const postId = req.params.postId;
+
+  const params = [postId, userId];
+  const sql = `
+     insert into "likes" ("postId", "userId")
+          values ($1, $2)
+       returning *
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/likes', (req, res, next) => {
+  const { userId } = req.user;
+
+  const params = [userId];
+  const sql = `
+     select "postId"
+       from "likes"
+      where "userId" = $1
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/likes/post/:postId', (req, res, next) => {
+  const { userId } = req.user;
+  const postId = req.params.postId;
+
+  const params = [postId, userId];
+  const sql = `
+     delete from "likes"
+           where "postId" = $1
+             and "userId" = $2
+       returning *
+  `;
+  db.query(sql, params)
+    .then(results => {
+      res.json(results.rows);
+    })
+    .catch(err => next(err));
+});
+
 app.listen(process.env.PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`express server listening on port ${process.env.PORT}`);

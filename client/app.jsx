@@ -56,6 +56,7 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
+
     if (route.path === '') {
       return <SignIn />;
     }
@@ -66,7 +67,8 @@ export default class App extends React.Component {
       return <PostForm />;
     }
     if (route.path === 'users-posts') {
-      return <UsersPosts />;
+      const postId = route.params.get('postId');
+      return <UsersPosts postId={postId}/>;
     }
     if (route.path === 'post') {
       const postId = route.params.get('postId');

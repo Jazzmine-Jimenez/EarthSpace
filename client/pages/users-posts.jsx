@@ -1,7 +1,6 @@
 import React from 'react';
 import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
-import { post } from 'jquery';
 
 export default class UsersPosts extends React.Component {
   constructor(props) {
@@ -39,7 +38,6 @@ export default class UsersPosts extends React.Component {
       .then(res => res.json())
       .then(likes => {
         likes.forEach(like => likesArray.push(like.postId));
-        console.log(likesArray);
         this.setState({ likes: likesArray });
       });
 
@@ -54,10 +52,21 @@ export default class UsersPosts extends React.Component {
     const postId = Number(event.target.getAttribute('data-post-id'));
 
     if (likes.includes(postId)) {
-      console.log('already liked');
+      fetch(`/api/likes/post/${postId}`, {
+        method: 'DELETE',
+        headers: {
+          'X-Access-Token': token
+        }
+      })
+        .then(res => {
+          res.json();
+        });
+
+      const updatedLikes = likes.filter(like => like !== postId);
+
+      this.setState({ likes: updatedLikes });
       return;
     }
-    console.log('updated like Array');
 
     likes.push(postId);
     this.setState({ likes });
@@ -74,9 +83,7 @@ export default class UsersPosts extends React.Component {
   }
 
   render() {
-
     const user = this.context.user;
-    console.log(this.state.likes);
 
     if (!user) return <Redirect to="" />;
 
@@ -91,6 +98,7 @@ export default class UsersPosts extends React.Component {
                 <OnePost
                   post={post}
                   handleLikeClick={this.handleLikeClick}
+                  likes={this.state.likes}
                 />
               </div>
             );
@@ -103,6 +111,14 @@ export default class UsersPosts extends React.Component {
 
 function OnePost(props) {
   const { title, tags, image, username, postId } = props.post;
+  const { likes } = props;
+
+  let buttonStyle;
+  if (likes.includes(postId)) {
+    buttonStyle = 'text-success fw-bold';
+  } else {
+    buttonStyle = 'text-muted';
+  }
 
   const tagsString = tags.join(', ');
 
@@ -121,9 +137,9 @@ function OnePost(props) {
         </div>
       </a>
       <hr/>
-      <div className="row py-3 px-5 text-muted">
+      <div className="row py-3 px-5 text-muted fs-5">
         <div className="col-sm-6">
-          <p><i onClick={props.handleLikeClick} data-post-id={postId}
+          <p className={buttonStyle}><i onClick={props.handleLikeClick} data-post-id={postId}
             className="fas fa-globe-americas"></i> Like
           </p>
         </div>

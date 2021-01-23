@@ -7,8 +7,8 @@ export default class SignIn extends React.Component {
   render() {
     const { user, route, handleSignIn } = this.context;
 
-    if (user !== null) {
-      return <Redirect to="top-posts" />;
+    if (user) {
+      return <Redirect to="" />;
     }
 
     return (

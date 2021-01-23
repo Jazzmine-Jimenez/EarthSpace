@@ -1,6 +1,7 @@
 import React from 'react';
 import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
+import decodeToken from '../lib/decode-token';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -15,10 +16,8 @@ export default class Home extends React.Component {
   }
 
   componentDidMount() {
-    const { user, token } = this.context;
+    const token = window.localStorage.getItem('earth-jwt');
     const likesArray = [];
-
-    if (!user) return <Redirect to="" />;
 
     fetch('/api/top-posts', {
       headers: {
@@ -27,6 +26,7 @@ export default class Home extends React.Component {
     })
       .then(res => res.json())
       .then(posts => {
+        console.log(posts);
         this.setState({ posts });
       });
 
@@ -44,10 +44,8 @@ export default class Home extends React.Component {
   }
 
   handleLikeClick(event) {
-    const { user, token } = this.context;
+    const token = window.localStorage.getItem('earth-jwt');
     const { likes } = this.state;
-
-    if (!user || !token) return <Redirect to="sign-in" />;
 
     const postId = Number(event.target.getAttribute('data-post-id'));
 
@@ -83,16 +81,17 @@ export default class Home extends React.Component {
   }
 
   render() {
-    const { user, token } = this.context;
+    const token = window.localStorage.getItem('earth-jwt');
+    const user = token ? decodeToken(token) : null;
 
-    if (!user || !token) return <Redirect to="sign-in" />;
+    if (!user) return <Redirect to="sign-in" />;
+    console.log(this.state.posts);
 
     return (
       <>
         <h3 className="heading my-4">What Other Earthlings Have Shared </h3>
         {
           this.state.posts.map(post => {
-
             return (
               <div key={post.postId}>
                 <OnePost

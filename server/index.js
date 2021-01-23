@@ -22,6 +22,7 @@ app.use(staticMiddleware);
 
 app.post('/api/auth/sign-up', (req, res, next) => {
   const { firstName, lastName, username, password } = req.body;
+
   if (!username || !password || !firstName || !lastName) {
     throw new ClientError(400, 'first name, last name, username and password are required fields');
   }
@@ -35,7 +36,6 @@ app.post('/api/auth/sign-up', (req, res, next) => {
         values ($1, $2, $3, $4)
         returning "userId", "username", "createdAt"
       `;
-
       return db.query(sql, params);
     })
     .then(result => {
@@ -47,12 +47,12 @@ app.post('/api/auth/sign-up', (req, res, next) => {
 
 app.post('/api/auth/sign-in', (req, res, next) => {
   const { username, password } = req.body;
+
   if (!username || !password) {
     throw new ClientError(401, 'invalid login');
   }
 
   const params = [username];
-
   const sql = `
     select "userId", "hashedPassword", "username"
       from "Users"
@@ -82,6 +82,30 @@ app.post('/api/auth/sign-in', (req, res, next) => {
           })
           .catch(err => next(err));
       }
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/top-posts', (req, res, next) => {
+  const sql = `
+    select count("likes"."postId") as totalLikes,
+           "likes"."postId",
+           "Post"."title",
+           "Post"."tags",
+           "Post"."content",
+           "Post"."image",
+           "Users"."username"
+      from "likes"
+      join "Users" using ("userId")
+      join "Post" using ("postId")
+  group by "likes"."postId", "Post"."title", "Post"."tags",
+           "Post"."content", "Post"."image", "Users"."username"
+  order by totalLikes desc
+  `;
+
+  db.query(sql)
+    .then(results => {
+      res.json(results.rows);
     })
     .catch(err => next(err));
 });
@@ -219,7 +243,6 @@ app.delete('/api/post/:postId', (req, res, next) => {
   }
 
   const params = [postId, userId];
-
   const sql = `
     delete from "Post"
           where "postId" = $1

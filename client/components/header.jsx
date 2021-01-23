@@ -15,6 +15,9 @@ export default class Header extends React.Component {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
+              <li className="nav-item">
+                <a className="nav-link" aria-current="page" href="#">Home</a>
+              </li>
             <li className="nav-item">
               <a className="nav-link" aria-current="page" href="#post-form">New Post</a>
             </li>
@@ -22,7 +25,7 @@ export default class Header extends React.Component {
               <a className="nav-link" href="#users-posts">My Posts</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#" onClick={handleSignOut}> Log Out</a>
+              <a className="nav-link" href="#sign-in" onClick={handleSignOut}> Log Out</a>
             </li>
           </ul>
         </div>

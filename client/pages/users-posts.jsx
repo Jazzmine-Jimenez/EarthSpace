@@ -18,7 +18,7 @@ export default class UsersPosts extends React.Component {
     const { user, token } = this.context;
     const likesArray = [];
 
-    if (!user) return <Redirect to="" />;
+    if (!user) return <Redirect to="sign-in" />;
 
     fetch('/api/users-posts', {
       headers: {
@@ -83,9 +83,9 @@ export default class UsersPosts extends React.Component {
   }
 
   render() {
-    const user = this.context.user;
+    const { user, token } = this.context;
 
-    if (!user) return <Redirect to="" />;
+    if (!user || !token) return <Redirect to="sign-in" />;
 
     return (
       <>

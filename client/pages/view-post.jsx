@@ -18,15 +18,15 @@ export default class ViewPost extends React.Component {
 
   render() {
     if (!this.state.post) return null;
-    const { user } = this.context;
 
-    if (!user) {
-      return <Redirect to="" />;
-    } else {
-      const { title, content, tags, image, username, postId } = this.state.post;
-      const tagsString = tags.join(', ');
+    const { user, token } = this.context;
 
-      return (
+    if (!user || !token) return <Redirect to="sign-in" />;
+
+    const { title, content, tags, image, username, postId } = this.state.post;
+    const tagsString = tags.join(', ');
+
+    return (
         <>
         <h3 className="title heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
           <div className="shadow p-3 mb-4 bg-white rounded">
@@ -56,8 +56,7 @@ export default class ViewPost extends React.Component {
             </div>
           </div>
         </>
-      );
-    }
+    );
   }
 }
 

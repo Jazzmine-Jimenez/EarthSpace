@@ -5,6 +5,7 @@ import decodeToken from './lib/decode-token';
 import Header from './components/header';
 import SignUp from './pages/sign-up';
 import SignIn from './pages/sign-in';
+import Home from './pages/home';
 import PostForm from './pages/post-form';
 import UsersPosts from './pages/users-posts';
 import ViewPost from './pages/view-post';
@@ -57,7 +58,7 @@ export default class App extends React.Component {
   renderPage() {
     const { route } = this.state;
 
-    if (route.path === '') {
+    if (route.path === 'sign-in') {
       return <SignIn />;
     }
     if (route.path === 'sign-up') {
@@ -69,6 +70,10 @@ export default class App extends React.Component {
     if (route.path === 'users-posts') {
       const postId = route.params.get('postId');
       return <UsersPosts postId={postId}/>;
+    }
+    if (route.path === '') {
+      const postId = route.params.get('postId');
+      return <Home postId={postId} />;
     }
     if (route.path === 'post') {
       const postId = route.params.get('postId');

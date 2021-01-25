@@ -20,15 +20,10 @@ export default class Home extends React.Component {
     const likesArray = [];
 
     fetch('/api/top-posts', {
-      headers: {
-        'X-Access-Token': token
-      }
+      headers: { 'X-Access-Token': token }
     })
       .then(res => res.json())
-      .then(posts => {
-        console.log(posts);
-        this.setState({ posts });
-      });
+      .then(posts => this.setState({ posts }));
 
     fetch('/api/likes', {
       headers: {
@@ -52,13 +47,9 @@ export default class Home extends React.Component {
     if (likes.includes(postId)) {
       fetch(`/api/likes/post/${postId}`, {
         method: 'DELETE',
-        headers: {
-          'X-Access-Token': token
-        }
+        headers: { 'X-Access-Token': token }
       })
-        .then(res => {
-          res.json();
-        });
+        .then(res => res.json());
 
       const updatedLikes = likes.filter(like => like !== postId);
 
@@ -71,13 +62,9 @@ export default class Home extends React.Component {
 
     fetch(`/api/likes/post/${postId}`, {
       method: 'POST',
-      headers: {
-        'X-Access-Token': token
-      }
+      headers: { 'X-Access-Token': token }
     })
-      .then(res => {
-        res.json();
-      });
+      .then(res => res.json());
   }
 
   render() {
@@ -85,7 +72,6 @@ export default class Home extends React.Component {
     const user = token ? decodeToken(token) : null;
 
     if (!user) return <Redirect to="sign-in" />;
-    console.log(this.state.posts);
 
     return (
       <>
@@ -111,6 +97,7 @@ export default class Home extends React.Component {
 function OnePost(props) {
   const { title, tags, image, username, postId } = props.post;
   const { likes } = props;
+  const tagsString = tags.join(', ');
 
   let buttonStyle;
   if (likes.includes(postId)) {
@@ -118,8 +105,6 @@ function OnePost(props) {
   } else {
     buttonStyle = 'text-muted';
   }
-
-  const tagsString = tags.join(', ');
 
   return (
     <div className="shadow p-3 mb-4 bg-white rounded ">
@@ -141,9 +126,6 @@ function OnePost(props) {
           <p className={buttonStyle}><i onClick={props.handleLikeClick} data-post-id={postId}
             className="fas fa-globe-americas"></i> Like
           </p>
-        </div>
-        <div className="col-sm-6 text-sm-end">
-          <p><i className="fas fa-user"></i> {username} </p>
         </div>
       </div>
     </div>

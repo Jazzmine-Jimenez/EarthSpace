@@ -7,6 +7,7 @@ const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
 const authorizationMiddleware = require('./authorization-middleware');
+
 const app = express();
 const jsonMiddleware = express.json();
 
@@ -89,24 +90,22 @@ app.post('/api/auth/sign-in', (req, res, next) => {
 app.get('/api/top-posts', (req, res, next) => {
   const sql = `
     select count("likes"."postId") as totalLikes,
-           "likes"."postId",
+           "Post"."postId",
            "Post"."title",
            "Post"."tags",
            "Post"."content",
            "Post"."image",
            "Users"."username"
-      from "likes"
+      from "Post"
       join "Users" using ("userId")
-      join "Post" using ("postId")
-  group by "likes"."postId", "Post"."title", "Post"."tags",
+ left join "likes" using ("postId")
+  group by "Post"."postId", "Post"."title", "Post"."tags",
            "Post"."content", "Post"."image", "Users"."username"
   order by totalLikes desc
   `;
 
   db.query(sql)
-    .then(results => {
-      res.json(results.rows);
-    })
+    .then(results => res.json(results.rows))
     .catch(err => next(err));
 });
 
@@ -130,9 +129,7 @@ app.get('/api/post/:postId', (req, res, next) => {
      where "Post"."postId" = $1
   `;
   db.query(sql, params)
-    .then(results => {
-      res.json(results.rows[0]);
-    })
+    .then(results => res.json(results.rows[0]))
     .catch(err => next(err));
 });
 
@@ -160,10 +157,9 @@ app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
          values  ($1, $2, $3, $4, $5)
       returning  *
   `;
+
   db.query(sql, params)
-    .then(results => {
-      res.json(results.rows[0]);
-    })
+    .then(results => res.json(results.rows[0]))
     .catch(err => next(err));
 });
 
@@ -189,9 +185,7 @@ app.get('/api/users-posts', (req, res, next) => {
   `;
 
   db.query(sql, params)
-    .then(results => {
-      res.json(results.rows);
-    })
+    .then(results => res.json(results.rows))
     .catch(err => next(err));
 });
 
@@ -227,6 +221,7 @@ app.put('/api/post/:postId', uploadsMiddleware, (req, res, next) => {
        and "userId" = $6
  returning *
   `;
+
   db.query(sql, params)
     .then(results => {
       res.json(results.rows);
@@ -249,10 +244,9 @@ app.delete('/api/post/:postId', (req, res, next) => {
             and "userId" = $2
       returning *
   `;
+
   db.query(sql, params)
-    .then(results => {
-      res.json(results.rows[0]);
-    })
+    .then(results => res.json(results.rows[0]))
     .catch(err => next(err));
 });
 
@@ -266,10 +260,9 @@ app.post('/api/likes/post/:postId', (req, res, next) => {
           values ($1, $2)
        returning *
   `;
+
   db.query(sql, params)
-    .then(results => {
-      res.json(results.rows);
-    })
+    .then(results => res.json(results.rows))
     .catch(err => next(err));
 });
 
@@ -282,10 +275,9 @@ app.get('/api/likes', (req, res, next) => {
        from "likes"
       where "userId" = $1
   `;
+
   db.query(sql, params)
-    .then(results => {
-      res.json(results.rows);
-    })
+    .then(results => res.json(results.rows))
     .catch(err => next(err));
 });
 
@@ -300,10 +292,9 @@ app.delete('/api/likes/post/:postId', (req, res, next) => {
              and "userId" = $2
        returning *
   `;
+
   db.query(sql, params)
-    .then(results => {
-      res.json(results.rows);
-    })
+    .then(results => res.json(results.rows))
     .catch(err => next(err));
 });
 

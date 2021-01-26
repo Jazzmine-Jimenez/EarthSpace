@@ -52,10 +52,11 @@ export default class PostForm extends React.Component {
   }
 
   render() {
-    const { user } = this.context;
-    if (user === null) return <Redirect to="" />;
-
+    const { user, token } = this.context;
     const { imagePreviewUrl } = this.state;
+
+    if (!user || !token) return <Redirect to="sign-in" />;
+
     return (
       <>
         <div className="row">

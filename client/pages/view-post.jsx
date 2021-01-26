@@ -18,15 +18,24 @@ export default class ViewPost extends React.Component {
 
   render() {
     if (!this.state.post) return null;
-    const { user } = this.context;
 
-    if (!user) {
-      return <Redirect to="" />;
-    } else {
-      const { title, content, tags, image, username, postId } = this.state.post;
-      const tagsString = tags.join(', ');
+    const { user, token } = this.context;
 
-      return (
+    if (!user || !token) return <Redirect to="sign-in" />;
+
+    const { title, content, tags, image, username, postId } = this.state.post;
+    const tagsString = tags.join(', ');
+
+    let editIcon = null;
+    if (user.username === username) {
+      editIcon = (
+        <a href={`#edit-post?postId=${postId}`} className="text-decoration-none text-muted">
+          <p> <i className="fas fa-edit"></i> Edit </p>
+        </a>
+      );
+    }
+
+    return (
         <>
         <h3 className="title heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
           <div className="shadow p-3 mb-4 bg-white rounded">
@@ -46,9 +55,7 @@ export default class ViewPost extends React.Component {
             <hr />
             <div className="row py-3 px-5 text-muted">
               <div className="col-sm-6">
-                <a href={`#edit-post?postId=${postId}`} className="text-decoration-none text-muted">
-                  <p> <i className="fas fa-edit"></i> Edit </p>
-                </a>
+                  {editIcon}
               </div>
               <div className="col-sm-6 text-sm-end">
                 <p ><i className="fas fa-user"></i> {username} </p>
@@ -56,8 +63,7 @@ export default class ViewPost extends React.Component {
             </div>
           </div>
         </>
-      );
-    }
+    );
   }
 }
 

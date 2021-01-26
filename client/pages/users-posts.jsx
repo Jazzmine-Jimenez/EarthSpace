@@ -1,6 +1,7 @@
 import React from 'react';
 import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
+import decodeToken from '../lib/decode-token';
 
 export default class UsersPosts extends React.Component {
   constructor(props) {
@@ -15,10 +16,8 @@ export default class UsersPosts extends React.Component {
   }
 
   componentDidMount() {
-    const { user, token } = this.context;
+    const token = window.localStorage.getItem('earth-jwt');
     const likesArray = [];
-
-    if (!user) return <Redirect to="" />;
 
     fetch('/api/users-posts', {
       headers: {
@@ -44,12 +43,9 @@ export default class UsersPosts extends React.Component {
   }
 
   handleLikeClick(event) {
-    const { user, token } = this.context;
     const { likes } = this.state;
-
-    if (!user) return;
-
     const postId = Number(event.target.getAttribute('data-post-id'));
+    const token = window.localStorage.getItem('earth-jwt');
 
     if (likes.includes(postId)) {
       fetch(`/api/likes/post/${postId}`, {
@@ -83,9 +79,10 @@ export default class UsersPosts extends React.Component {
   }
 
   render() {
-    const user = this.context.user;
+    const token = window.localStorage.getItem('earth-jwt');
+    const user = token ? decodeToken(token) : null;
 
-    if (!user) return <Redirect to="" />;
+    if (!user) return <Redirect to="sign-in" />;
 
     return (
       <>

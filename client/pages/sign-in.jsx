@@ -7,10 +7,11 @@ export default class SignIn extends React.Component {
   render() {
     const { user, route, handleSignIn } = this.context;
 
-    if (user !== null) {
-      return <Redirect to="users-posts" />;
-    } else {
-      return (
+    if (user) {
+      return <Redirect to="" />;
+    }
+
+    return (
       <>
         <div className="heading text-center mt-5">
           <div className="row">
@@ -28,8 +29,7 @@ export default class SignIn extends React.Component {
           key={route.path}
           onSignIn={handleSignIn} />
         </>
-      );
-    }
+    );
   }
 }
 

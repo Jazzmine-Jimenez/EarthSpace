@@ -17,9 +17,10 @@ A full stack JavaScript solo project for earth lovers to connect and share ideas
 
 ## Live Demo
 
-Try the application live at ...
+Try the application live at https://earthspace.herokuapp.com/
 
 ## Preview 
+
 
 
 ## Features

@@ -20,7 +20,7 @@ A full stack JavaScript solo project for earth lovers to connect and share ideas
 Try the application live at https://earthspace.herokuapp.com/
 
 ## Preview 
-![Live site preview](images/EarthSpace-live-demo.gif)
+![Live site preview](server/public/images/EarthSpace-live-demo.gif)
 
 
 ## Features

@@ -17,10 +17,11 @@ A full stack JavaScript solo project for earth lovers to connect and share ideas
 
 ## Live Demo
 
-Try the application live at ...
+Try the application live at https://earthspace.herokuapp.com/
 
-## Preview 
+## Preview
 
+![Live site preview](server/public/images/EarthSpace-live-demo.gif)
 
 ## Features
 
@@ -40,6 +41,3 @@ Try the application live at ...
 - How to utilize React Components
 - How to pass through Context to use props throughout the application
 - How to create hash routes to cahnge the view of the page
-
-
-

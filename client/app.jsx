@@ -44,7 +44,7 @@ export default class App extends React.Component {
       user: payload,
       token: token
     });
-    window.location.hash = '#users-posts';
+    window.location.hash = '#';
   }
 
   handleSignOut() {

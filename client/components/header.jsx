@@ -19,7 +19,7 @@ export default class Header extends React.Component {
                 <a className="nav-link" aria-current="page" href="#">Home</a>
               </li>
             <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="#post-form">New Post</a>
+              <a className="nav-link" aria-current="page" href="#post-form">Create a Post</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#users-posts">My Posts</a>

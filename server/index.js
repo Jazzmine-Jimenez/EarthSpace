@@ -229,19 +229,36 @@ app.put('/api/post/:postId', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.delete('/api/post/:postId', (req, res, next) => {
+app.delete('/api/likes/:postId', (req, res, next) => {
   const postId = req.params.postId;
-  const { userId } = req.user;
 
   if (!postId) {
     throw new ClientError(400, 'PostId is a required fields');
   }
 
-  const params = [postId, userId];
+  const params = [postId];
+  const sql = `
+    delete from "likes"
+          where "postId" = $1
+      returning *
+  `;
+
+  db.query(sql, params)
+    .then(results => res.json(results.rows[0]))
+    .catch(err => next(err));
+});
+
+app.delete('/api/post/:postId', (req, res, next) => {
+  const postId = req.params.postId;
+
+  if (!postId) {
+    throw new ClientError(400, 'PostId is a required fields');
+  }
+
+  const params = [postId];
   const sql = `
     delete from "Post"
           where "postId" = $1
-            and "userId" = $2
       returning *
   `;
 

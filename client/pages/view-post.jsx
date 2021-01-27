@@ -49,7 +49,7 @@ export default class ViewPost extends React.Component {
               </div>
               <div className="col-sm-5 mh-100 d-flex justify-content-center">
                 <img className="image border rounded my-5 mw-100"
-                  src={image} alt="post image" />
+                  src={image} alt="" />
               </div>
             </div>
             <hr />

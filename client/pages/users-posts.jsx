@@ -81,10 +81,24 @@ export default class UsersPosts extends React.Component {
   render() {
     const token = window.localStorage.getItem('earth-jwt');
     const user = token ? decodeToken(token) : null;
+    const posts = this.state.posts;
 
     if (!user) return <Redirect to="sign-in" />;
 
-    return (
+    if (posts.length === 0) {
+      return (
+        <>
+        <h3 className="heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
+        <div className="text-center">
+          <p className="text-center">Oh... well you have not shared anything yet!</p>
+          <a href="#post-form" role="button" className="btn btn-dark my-3"> Create a Post</a>
+
+        </div>
+
+        </>
+      );
+    } else {
+      return (
       <>
         <h3 className="heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
         {
@@ -102,7 +116,9 @@ export default class UsersPosts extends React.Component {
           })
         }
       </>
-    );
+      );
+    }
+
   }
 }
 

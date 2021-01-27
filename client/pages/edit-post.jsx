@@ -98,7 +98,15 @@ export default class EditPost extends React.Component {
   }
 
   handleDelete() {
-    const { token } = this.context;
+    const token = window.localStorage.getItem('earth-jwt');
+
+    fetch(`/api/post/${this.props.postId}`, {
+      method: 'DELETE',
+      headers: {
+        'X-Access-Token': token
+      }
+    });
+
     fetch(`/api/post/${this.props.postId}`, {
       method: 'DELETE',
       headers: {

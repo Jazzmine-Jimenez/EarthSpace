@@ -17,12 +17,12 @@ export default class PostForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { token } = this.context;
+    const token = window.localStorage.getItem('earth-jwt');
     const formData = new FormData(event.target);
     fetch('/api/post-form', {
       method: 'POST',
       headers: {
-        'X-Access-Token': `${token}`
+        'X-Access-Token': token
       },
       body: formData
     })
@@ -52,10 +52,11 @@ export default class PostForm extends React.Component {
   }
 
   render() {
-    const { user, token } = this.context;
+    const token = window.localStorage.getItem('earth-jwt');
+
     const { imagePreviewUrl } = this.state;
 
-    if (!user || !token) return <Redirect to="sign-in" />;
+    if (!token) return <Redirect to="sign-in" />;
 
     return (
       <>

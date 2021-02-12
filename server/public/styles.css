@@ -17,21 +17,11 @@ body {
 }
 
 .post-container {
-  max-width: 800px;
+  max-width: 700px;
 }
 
 .sign-up-container {
   max-width: 600px;
-}
-
-.image {
-  max-height: 400px;
-  max-width: 300px;
-  object-fit: contain;
-}
-
-.image-preview-container {
-  margin: 0 0.1px;
 }
 
 .post-container-height {

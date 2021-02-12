@@ -1,7 +1,6 @@
 import React from 'react';
 import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
-import decodeToken from '../lib/decode-token';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -69,9 +68,8 @@ export default class Home extends React.Component {
 
   render() {
     const token = window.localStorage.getItem('earth-jwt');
-    const user = token ? decodeToken(token) : null;
 
-    if (!user) return <Redirect to="sign-in" />;
+    if (!token) return <Redirect to="sign-in" />;
 
     return (
       <>
@@ -95,7 +93,7 @@ export default class Home extends React.Component {
 }
 
 function OnePost(props) {
-  const { title, tags, image, username, postId } = props.post;
+  const { title, tags, username, postId } = props.post;
   const { likes } = props;
   const tagsString = tags.join(', ');
 
@@ -114,9 +112,6 @@ function OnePost(props) {
             <h5 className="text-body"> {title} </h5>
             <p className="sub-title fw-lighter"> <i className="fas fa-hashtag me-1 "></i>{tagsString} </p>
             <h6 className="fw-lighter"><i className="fas fa-user"></i> {username} </h6>
-          </div>
-          <div className="col-sm-5 mh-100 d-flex justify-content-center">
-            <img className="image border rounded my-5 mw-100" src={image} alt="" />
           </div>
         </div>
       </a>

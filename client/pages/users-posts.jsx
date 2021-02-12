@@ -146,9 +146,9 @@ function OnePost(props) {
       </a>
       <hr/>
       <div className="row py-3 px-5 text-muted fs-5">
-        <div className="col-sm-6">
-          <p className={buttonStyle}><i onClick={props.handleLikeClick} data-post-id={postId}
-            className="fas fa-globe-americas"></i> Like
+        <div className="col-sm-6 like-button">
+          <p className={buttonStyle} onClick={props.handleLikeClick} data-post-id={postId}><i
+            className="fas fa-globe-americas" data-post-id={postId}></i> Like
           </p>
         </div>
         <div className="col-sm-6 text-sm-end">

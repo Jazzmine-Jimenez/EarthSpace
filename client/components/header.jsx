@@ -4,7 +4,17 @@ import AppContext from '../lib/app-context';
 export default class Header extends React.Component {
   render() {
     const { handleSignOut } = this.context;
+    const token = window.localStorage.getItem('earth-jwt');
 
+    if (!token) {
+      return (
+        <nav className="navbar navbar-expand-lg navbar-dark navbar-color">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">EarthSpace</a>
+        </div>
+      </nav>
+      );
+    }
     return (
     <nav className="navbar navbar-expand-lg navbar-dark navbar-color">
       <div className="container-fluid">

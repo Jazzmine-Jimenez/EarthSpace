@@ -27,3 +27,7 @@ body {
 .post-container-height {
   max-height: 300px;
 }
+
+.like-button:hover {
+  cursor: pointer;
+}

@@ -6,7 +6,6 @@ export default class EditPost extends React.Component {
     super(props);
     this.state = {
       post: null,
-      file: '',
       updateButton: 'btn btn-lg button me-3',
       deleteButton: 'btn btn-lg btn-secondary'
     };
@@ -18,7 +17,7 @@ export default class EditPost extends React.Component {
   }
 
   componentDidMount() {
-    const { token } = this.context;
+    const token = window.localStorage.getItem('earth-jwt');
 
     if (this.props.postId === '1') {
       this.setState({
@@ -63,17 +62,18 @@ export default class EditPost extends React.Component {
   }
 
   handleSubmit(event) {
-    const { token } = this.context;
-    const formData = new FormData(event.target);
+    const token = window.localStorage.getItem('earth-jwt');
+    const { post } = this.state;
 
     event.preventDefault();
 
     fetch(`/api/post/${this.props.postId}`, {
       method: 'PUT',
       headers: {
-        'X-Access-Token': token
+        'X-Access-Token': token,
+        'Content-Type': 'application/json'
       },
-      body: formData
+      body: JSON.stringify(post)
     })
       .then(res => {
         window.location.hash = '#users-posts';

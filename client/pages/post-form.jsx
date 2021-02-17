@@ -6,33 +6,64 @@ export default class PostForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-
     this.state = {
-      file: ''
+      post: null
     };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleCheck = this.handleCheck.bind(this);
   }
 
   handleSubmit(event) {
     event.preventDefault();
+
+    const { post } = this.state;
     const token = window.localStorage.getItem('earth-jwt');
-    const formData = new FormData(event.target);
+
     fetch('/api/post-form', {
       method: 'POST',
       headers: {
-        'X-Access-Token': token
+        'X-Access-Token': token,
+        'Content-Type': 'application/json'
       },
-      body: formData
+      body: JSON.stringify(post)
     })
       .then(res => {
         event.target.reset();
         window.location.hash = '#users-posts';
-        this.setState({
-          file: ''
-        });
+
       })
       .catch(err => console.error(err));
+  }
 
+  handleCheck(event) {
+    const { checked, value } = event.target;
+    const tagsArray = this.state.post.tags;
+
+    if (checked) {
+      const updatedArray = tagsArray.concat([value]);
+      return updatedArray;
+    } else {
+      const updatedArray = tagsArray.filter(tag => tag !== value);
+      return updatedArray;
+    }
+  }
+
+  handleChange(event) {
+    const { name, value } = event.target;
+    const postState = this.state.post;
+    const newPostState = Object.assign({}, postState);
+    if (name === 'tags') {
+      if (this.state.post.tags === undefined) {
+        newPostState[name] = [value];
+      } else {
+        newPostState[name] = this.handleCheck(event);
+      }
+    } else {
+      newPostState[name] = value;
+    }
+    this.setState({ post: newPostState });
   }
 
   render() {
@@ -51,7 +82,7 @@ export default class PostForm extends React.Component {
           <div className="row">
             <div className="col-sm-12 mb-3">
               <label className="text-body" htmlFor="title">Title: </label>
-              <input required type="text" className="form-control" name="title" id="title"/>
+              <input required onChange={this.handleChange} type="text" className="form-control" name="title" id="title"/>
             </div>
           </div>
           <div className="form-group">
@@ -64,34 +95,34 @@ export default class PostForm extends React.Component {
               <div className="row">
                 <div className="col-sm-4 ">
                   <label className="tags">
-                    <input type="checkbox" id="option1" name="tags" value="reduce" /> Reduce
+                    <input onChange={this.handleChange} type="checkbox" id="option1" name="tags" value="reduce" /> Reduce
                   </label>
                 </div>
                 <div className="col-sm-4">
                   <label className="tags">
-                    <input type="checkbox" id="option2" name="tags" value="recycle" /> Recycle
+                    <input onChange={this.handleChange} type="checkbox" id="option2" name="tags" value="recycle" /> Recycle
                   </label>
                 </div>
                 <div className="col-sm-4">
                   <label className="tags">
-                    <input type="checkbox" id="option3" name="tags" value="reuse" /> Reuse
+                    <input onChange={this.handleChange} type="checkbox" id="option3" name="tags" value="reuse" /> Reuse
                   </label>
                 </div>
               </div>
               <div className="row mb-3">
                 <div className="col-sm-4">
                   <label className="tags">
-                    <input type="checkbox" id="option4" name="tags" value="simple" /> Simple
+                    <input onChange={this.handleChange} type="checkbox" id="option4" name="tags" value="simple" /> Simple
                   </label>
                 </div>
                 <div className="col-sm-4">
                   <label className="tags">
-                    <input type="checkbox" id="option5" name="tags" value="consumers" /> Consumers
+                    <input onChange={this.handleChange} type="checkbox" id="option5" name="tags" value="consumers" /> Consumers
                   </label>
                 </div>
                 <div className="col-sm-4">
                   <label className="tags">
-                    <input type="checkbox" id="option6" name="tags" value="businesses" /> Businesses
+                    <input onChange={this.handleChange} type="checkbox" id="option6" name="tags" value="businesses" /> Businesses
                   </label>
                 </div>
               </div>
@@ -100,7 +131,7 @@ export default class PostForm extends React.Component {
           <div className="row form-group">
             <div className="col-sm-12 mb-3">
               <label className="text-body" htmlFor="content">What would you like to share?</label>
-              <textarea required className="form-control" name="content" id="content" cols="30" rows="10"></textarea>
+              <textarea required onChange={this.handleChange} className="form-control" name="content" id="content" cols="30" rows="10"></textarea>
             </div>
           </div>
           <button type="submit" className="btn button my-3">Post</button>

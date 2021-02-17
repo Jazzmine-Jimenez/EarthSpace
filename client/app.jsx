@@ -20,13 +20,11 @@ export default class App extends React.Component {
       user: null,
       token: null,
       isAuthorizing: true,
-      route: parseRoute(window.location.hash),
-      isNavbarOpen: false
+      route: parseRoute(window.location.hash)
     };
 
     this.handleSignIn = this.handleSignIn.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
-    this.handleNavbar = this.handleNavbar.bind(this);
   }
 
   componentDidMount() {
@@ -55,20 +53,6 @@ export default class App extends React.Component {
       user: null,
       token: null
     });
-  }
-
-  handleNavbar(event) {
-    console.log(event.target.id);
-    if (event.target.id === 'navbar-click-area') {
-      this.setState({
-        isNavbarOpen: !this.state.isNavbarOpen
-      });
-      console.log('clicked navbar');
-    } else {
-      this.setState({
-        isNavbarOpen: false
-      });
-    }
   }
 
   renderPage() {
@@ -105,9 +89,9 @@ export default class App extends React.Component {
   render() {
     if (this.state.isAuthorizing) return null;
 
-    const { user, route, token, isNavbarOpen } = this.state;
-    const { handleSignIn, handleSignOut, handleNavbar } = this;
-    const contextValue = { user, token, route, handleSignIn, handleSignOut, handleNavbar, isNavbarOpen };
+    const { user, route, token } = this.state;
+    const { handleSignIn, handleSignOut } = this;
+    const contextValue = { user, token, route, handleSignIn, handleSignOut };
 
     return (
     <AppContext.Provider value={contextValue}>

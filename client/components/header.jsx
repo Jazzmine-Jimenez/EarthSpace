@@ -2,17 +2,9 @@ import React from 'react';
 import AppContext from '../lib/app-context';
 
 export default class Header extends React.Component {
-
   render() {
-    const { handleSignOut, handleNavbar, isNavbarOpen } = this.context;
+    const { handleSignOut } = this.context;
     const token = window.localStorage.getItem('earth-jwt');
-
-    let navbarStatus;
-    if (isNavbarOpen) {
-      navbarStatus = 'collapse navbar-collapse show';
-    } else {
-      navbarStatus = 'collapse navbar-collapse';
-    }
 
     if (!token) {
       return (
@@ -26,14 +18,14 @@ export default class Header extends React.Component {
 
     return (
     <nav className="navbar navbar-expand-lg navbar-dark navbar-color">
-      <div onClick={handleNavbar} className="container-fluid" id="navbar-click-area">
+      <div className="container-fluid">
         <a className="navbar-brand" href="#">EarthSpace</a>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded={isNavbarOpen} aria-label="Toggle navigation">
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
           <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+            <ul className="navbar-nav">
               <li className="nav-item">
                 <a className="nav-link" aria-current="page" href="#">Home</a>
               </li>

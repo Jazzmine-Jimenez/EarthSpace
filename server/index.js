@@ -94,13 +94,12 @@ app.get('/api/top-posts', (req, res, next) => {
            "Post"."title",
            "Post"."tags",
            "Post"."content",
-           "Post"."image",
            "Users"."username"
       from "Post"
       join "Users" using ("userId")
  left join "likes" using ("postId")
   group by "Post"."postId", "Post"."title", "Post"."tags",
-           "Post"."content", "Post"."image", "Users"."username"
+           "Post"."content", "Users"."username"
   order by totalLikes desc
   `;
 
@@ -121,7 +120,6 @@ app.get('/api/post/:postId', (req, res, next) => {
     select "Post"."title",
            "Post"."tags",
            "Post"."content",
-           "Post"."image",
            "Post"."postId",
            "Users"."username"
       from "Post"
@@ -149,11 +147,10 @@ app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
   }
 
   const tagsArray = JSON.stringify(tags);
-  const imageUrl = `images/${req.file.filename}`;
 
-  const params = [title, tagsArray, content, imageUrl, userId];
+  const params = [title, tagsArray, content, userId];
   const sql = `
-    insert into "Post" ("title", "tags", "content", "image", "userId")
+    insert into "Post" ("title", "tags", "content", "userId")
          values  ($1, $2, $3, $4, $5)
       returning  *
   `;
@@ -175,7 +172,6 @@ app.get('/api/users-posts', (req, res, next) => {
     select "Post"."title",
            "Post"."tags",
            "Post"."content",
-           "Post"."image",
            "Post"."postId",
            "Users"."username"
       from "Post"
@@ -204,19 +200,13 @@ app.put('/api/post/:postId', uploadsMiddleware, (req, res, next) => {
   }
 
   const tagsArray = JSON.stringify(tags);
-  let imageUrl = null;
 
-  if (req.file) {
-    imageUrl = `images/${req.file.filename}`;
-  }
-
-  const params = [title, tagsArray, content, imageUrl, postId, userId];
+  const params = [title, tagsArray, content, postId, userId];
   const sql = `
     update "Post"
        set "title" = $1,
            "tags" = $2,
-           "content" = $3,
-           "image" = coalesce($4, "image")
+           "content" = $3
      where "postId" = $5
        and "userId" = $6
  returning *

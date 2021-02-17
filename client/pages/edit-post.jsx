@@ -7,7 +7,6 @@ export default class EditPost extends React.Component {
     this.state = {
       post: null,
       file: '',
-      imagePreviewChanged: '',
       updateButton: 'btn btn-lg button me-3',
       deleteButton: 'btn btn-lg btn-secondary'
     };
@@ -15,7 +14,6 @@ export default class EditPost extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
-    this.handleImageChange = this.handleImageChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
@@ -50,19 +48,6 @@ export default class EditPost extends React.Component {
       const updatedArray = tagsArray.filter(tag => tag !== value);
       return updatedArray;
     }
-  }
-
-  handleImageChange(event) {
-    const reader = new FileReader();
-    const file = event.target.files[0];
-
-    reader.onloadend = () => {
-      this.setState({
-        file: file,
-        imagePreviewChanged: reader.result
-      });
-    };
-    reader.readAsDataURL(file);
   }
 
   handleChange(event) {
@@ -121,15 +106,7 @@ export default class EditPost extends React.Component {
   render() {
     if (!this.state.post) return null;
 
-    const { title, content, image } = this.state.post;
-    const { imagePreviewChanged } = this.state;
-    let currentPreviewImage = null;
-
-    if (imagePreviewChanged === '') {
-      currentPreviewImage = image;
-    } else {
-      currentPreviewImage = imagePreviewChanged;
-    }
+    const { title, content } = this.state.post;
 
     return (
       <>
@@ -212,22 +189,6 @@ export default class EditPost extends React.Component {
               <label className="text-body" htmlFor="content">What would you like to share?</label>
               <textarea required className="form-control" name="content"
                 id="content" onChange={this.handleChange} value={content} cols="30" rows="10"></textarea>
-            </div>
-          </div>
-          <div className="row form-group">
-            <div className="col-sm-12">
-              <label className="text-body"> Upload image: </label>
-            </div>
-          </div>
-          <div className="row border rounded py-3 align-items-center image-preview-container">
-            <div className="col-sm-7">
-              <label htmlFor="image" className="mx-3"> Image: </label>
-              <input onChange={this.handleImageChange} type="file"
-                name="image" id="image"/>
-            </div>
-            <div className="col-sm-5 mh-100 d-flex justify-content-center">
-              <img className="image-preview border roundedimage border rounded my-5 mw-100"
-              src={currentPreviewImage} alt="placeholder" />
             </div>
           </div>
           <div className="row">

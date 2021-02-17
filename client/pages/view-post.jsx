@@ -1,6 +1,7 @@
 import React from 'react';
 import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
+import decodeToken from '../lib/decode-token';
 
 export default class ViewPost extends React.Component {
   constructor(props) {
@@ -19,11 +20,12 @@ export default class ViewPost extends React.Component {
   render() {
     if (!this.state.post) return null;
 
-    const { user, token } = this.context;
+    const token = window.localStorage.getItem('earth-jwt');
+    const user = token ? decodeToken(token) : null;
 
-    if (!user || !token) return <Redirect to="sign-in" />;
+    if (!token) return <Redirect to="sign-in" />;
 
-    const { title, content, tags, image, username, postId } = this.state.post;
+    const { title, content, tags, username, postId } = this.state.post;
     const tagsString = tags.join(', ');
 
     let editIcon = null;
@@ -46,10 +48,6 @@ export default class ViewPost extends React.Component {
                 <i className="fas fa-hashtag mx-sm-1"></i>
                 {tagsString} </p>
                 <p> {content} </p>
-              </div>
-              <div className="col-sm-5 mh-100 d-flex justify-content-center">
-                <img className="image border rounded my-5 mw-100"
-                  src={image} alt="" />
               </div>
             </div>
             <hr />

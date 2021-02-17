@@ -5,7 +5,6 @@ const express = require('express');
 const jwt = require('jsonwebtoken'); // eslint-disable-line
 const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
-const uploadsMiddleware = require('./uploads-middleware');
 const authorizationMiddleware = require('./authorization-middleware');
 
 const app = express();
@@ -133,7 +132,7 @@ app.get('/api/post/:postId', (req, res, next) => {
 
 app.use(authorizationMiddleware);
 
-app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
+app.post('/api/post-form', (req, res, next) => {
   const { title, content } = req.body;
   let { tags } = req.body;
   const { userId } = req.user;
@@ -151,7 +150,7 @@ app.post('/api/post-form', uploadsMiddleware, (req, res, next) => {
   const params = [title, tagsArray, content, userId];
   const sql = `
     insert into "Post" ("title", "tags", "content", "userId")
-         values  ($1, $2, $3, $4, $5)
+         values  ($1, $2, $3, $4)
       returning  *
   `;
 
@@ -185,7 +184,7 @@ app.get('/api/users-posts', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.put('/api/post/:postId', uploadsMiddleware, (req, res, next) => {
+app.put('/api/post/:postId', (req, res, next) => {
   const postId = req.params.postId;
   const { userId } = req.user;
   const { title, content } = req.body;
@@ -207,8 +206,8 @@ app.put('/api/post/:postId', uploadsMiddleware, (req, res, next) => {
        set "title" = $1,
            "tags" = $2,
            "content" = $3
-     where "postId" = $5
-       and "userId" = $6
+     where "postId" = $4
+       and "userId" = $5
  returning *
   `;
 

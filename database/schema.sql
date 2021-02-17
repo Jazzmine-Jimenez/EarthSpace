@@ -26,7 +26,6 @@ CREATE TABLE "Post" (
 	"title" TEXT NOT NULL,
 	"tags" jsonb NOT NULL,
 	"content" TEXT NOT NULL,
-	"image" TEXT NOT NULL,
 	"userId" integer NOT NULL,
 	CONSTRAINT "Post_pk" PRIMARY KEY ("postId")
 ) WITH (

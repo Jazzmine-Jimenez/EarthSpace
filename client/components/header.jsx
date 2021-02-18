@@ -1,5 +1,6 @@
 import React from 'react';
 import AppContext from '../lib/app-context';
+import { Navbar, Nav, Row } from 'react-bootstrap';
 
 export default class Header extends React.Component {
   render() {
@@ -9,39 +10,28 @@ export default class Header extends React.Component {
     if (!token) {
       return (
         <nav className="navbar navbar-expand-lg navbar-dark navbar-color">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="#">EarthSpace</a>
-        </div>
-      </nav>
+          <div className="container-fluid">
+            <a className="navbar-brand" href="#">EarthSpace</a>
+          </div>
+        </nav>
       );
     }
 
     return (
-    <nav className="navbar navbar-expand-lg navbar-dark navbar-color">
-      <div className="container-fluid">
-        <a className="navbar-brand" href="#">EarthSpace</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <a className="nav-link" aria-current="page" href="#">Home</a>
-              </li>
-            <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="#post-form">Create a Post</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#users-posts">My Posts</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#sign-in" onClick={handleSignOut}> Log Out</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <Row>
+      <Navbar className="px-3 navbar-color" collapseOnSelect fixed="top" expand="lg" bg="navbar-color" variant="dark">
+        <Navbar.Brand href="#">EarthSpace</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#">Home</Nav.Link>
+            <Nav.Link href="#post-form">Create a Post</Nav.Link>
+            <Nav.Link href="#users-posts">My Posts</Nav.Link>
+            <Nav.Link onClick={handleSignOut} href="#sign-in">Log Out</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </Row>
     );
   }
 }

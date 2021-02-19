@@ -149,7 +149,28 @@ app.post('/api/comments/:postId', (req, res, next) => {
   db.query(sql, params)
     .then(results => res.json(results.rows[0]))
     .catch(err => next(err));
+});
 
+app.get('/api/comments/:postId', (req, res, next) => {
+  const postId = Number(req.params.postId);
+
+  if (!postId) {
+    throw new ClientError(400, 'Content is a required fields');
+  }
+
+  const params = [postId];
+
+  const sql = `
+    select "Comments"."content",
+           "Users"."username"
+      from "Comments"
+      join "Users" using ("userId")
+     where "postId" = $1
+  `;
+
+  db.query(sql, params)
+    .then(results => res.json(results.rows[0]))
+    .catch(err => next(err));
 });
 
 app.use(authorizationMiddleware);

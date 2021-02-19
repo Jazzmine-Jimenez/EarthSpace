@@ -7,7 +7,8 @@ export default class ViewPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      post: null
+      post: null,
+      comments: null
     };
   }
 
@@ -15,6 +16,10 @@ export default class ViewPost extends React.Component {
     fetch(`/api/post/${this.props.postId}`)
       .then(res => res.json())
       .then(post => this.setState({ post }));
+
+    fetch(`/api/comments/${this.props.postId}`)
+      .then(res => res.json())
+      .then(comments => this.setState({ comments }));
   }
 
   render() {
@@ -60,9 +65,20 @@ export default class ViewPost extends React.Component {
               </div>
             </div>
           </div>
+          <div className="p-3 text-muted">
+            <p>comments:</p>
+            {
+              console.log(this.state.comments)
+
+            }
+          </div>
         </>
     );
   }
+}
+
+function OneComment(props) {
+  console.log('inisde comment function');
 }
 
 ViewPost.contextType = AppContext;

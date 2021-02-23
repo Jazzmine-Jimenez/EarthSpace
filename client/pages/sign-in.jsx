@@ -13,7 +13,7 @@ export default class SignIn extends React.Component {
 
     return (
       <>
-        <div className="heading text-center mt-5">
+        <div className="heading text-center">
           <div className="row">
             <div className="col-12">
               <h1>Connect With Other Earthlings</h1>

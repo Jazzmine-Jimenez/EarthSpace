@@ -25,10 +25,7 @@ export default class ViewPost extends React.Component {
     fetch(`/api/comments/${this.props.postId}`)
       .then(res => res.json())
       .then(comments => {
-        const commentsArray = [];
-        console.log(commentsArray);
-        commentsArray.push(comments);
-        this.setState({ previousComments: commentsArray });
+        this.setState({ previousComments: comments });
       });
   }
 
@@ -38,7 +35,7 @@ export default class ViewPost extends React.Component {
     const newCommentState = Object.assign({}, commentState);
 
     newCommentState[name] = value;
-    console.log(newCommentState);
+
     this.setState({ comment: newCommentState });
   }
 
@@ -46,7 +43,7 @@ export default class ViewPost extends React.Component {
     event.preventDefault();
     const { comment } = this.state;
     const token = window.localStorage.getItem('earth-jwt');
-    console.log(comment);
+
     fetch(`/api/comments/${this.props.postId}`, {
       method: 'POST',
       headers: {
@@ -57,6 +54,16 @@ export default class ViewPost extends React.Component {
     })
       .then(res => {
         event.target.reset();
+      })
+      .catch(err => console.error(err));
+
+    fetch(`/api/comments/${this.props.postId}`)
+      .then(res => res.json())
+      .then(comments => {
+        this.setState({
+          previousComments: comments,
+          comment: null
+        });
       })
       .catch(err => console.error(err));
   }
@@ -140,7 +147,7 @@ function OneComment(props) {
 
   return (
     <div>
-      <p className="text-muted shadow px-4 py-3 bg-white rounded w-100">
+      <p className="text-muted border px-4 py-3 bg-white rounded w-100">
           {username}: {content}
       </p>
     </div>

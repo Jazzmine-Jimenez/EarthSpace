@@ -149,7 +149,7 @@ app.get('/api/comments/:postId', (req, res, next) => {
   `;
 
   db.query(sql, params)
-    .then(results => res.json(results.rows[0]))
+    .then(results => res.json(results.rows))
     .catch(err => next(err));
 });
 
@@ -166,7 +166,6 @@ app.post('/api/comments/:postId', (req, res, next) => {
   }
 
   const params = [userId, postId, content];
-  console.log(params);
   const sql = `
     insert into "Comments" ("userId", "postId", "content")
          values  ($1, $2, $3)

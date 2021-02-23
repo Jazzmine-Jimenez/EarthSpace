@@ -87,6 +87,11 @@ export default class SignUp extends React.Component {
             </div>
           </form>
         </div>
+        <div className="row">
+          <div className="col-12 text-center">
+            <a className="btn text-decoration-underline" href="#sign-in"> Go back to sign-in. </a>
+          </div>
+        </div>
       </div>
     );
   }

@@ -89,9 +89,9 @@ export default class App extends React.Component {
   render() {
     if (this.state.isAuthorizing) return null;
 
-    const { user, route, token } = this.state;
+    const { route } = this.state;
     const { handleSignIn, handleSignOut } = this;
-    const contextValue = { user, token, route, handleSignIn, handleSignOut };
+    const contextValue = { route, handleSignIn, handleSignOut };
 
     return (
     <AppContext.Provider value={contextValue}>

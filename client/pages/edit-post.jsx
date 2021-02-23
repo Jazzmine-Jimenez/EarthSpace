@@ -32,9 +32,8 @@ export default class EditPost extends React.Component {
       }
     })
       .then(res => res.json())
-      .then(post => this.setState({
-        post
-      }));
+      .then(post => this.setState({ post }))
+      .catch(err => console.error(err));
   }
 
   handleCheck(event) {
@@ -79,13 +78,21 @@ export default class EditPost extends React.Component {
         window.location.hash = '#users-posts';
         res.json();
       })
-      .then(post => this.setState({ post }));
+      .then(post => this.setState({ post }))
+      .catch(err => console.error(err));
   }
 
   handleDelete() {
     const token = window.localStorage.getItem('earth-jwt');
 
-    fetch(`/api/post/${this.props.postId}`, {
+    fetch(`/api/likes/${this.props.postId}`, {
+      method: 'DELETE',
+      headers: {
+        'X-Access-Token': token
+      }
+    });
+
+    fetch(`/api/comments/${this.props.postId}`, {
       method: 'DELETE',
       headers: {
         'X-Access-Token': token
@@ -100,7 +107,8 @@ export default class EditPost extends React.Component {
     })
       .then(res => {
         window.location.hash = '#users-posts';
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
@@ -177,8 +185,8 @@ export default class EditPost extends React.Component {
                   <label className="tags">
                     <input type="checkbox" id="option6" name="tags"
                     onChange={this.handleChange}
-                    checked={this.state.post.tags.includes('buisnesses')}
-                    value="buisnesses" /> Buisnesses
+                    checked={this.state.post.tags.includes('businesses')}
+                    value="businesses" /> Businesses
                   </label>
                 </div>
               </div>

@@ -146,6 +146,7 @@ app.get('/api/comments/:postId', (req, res, next) => {
       from "Comments"
       join "Users" using ("userId")
      where "postId" = $1
+     order by "commentId"
   `;
 
   db.query(sql, params)
@@ -273,6 +274,25 @@ app.delete('/api/likes/:postId', (req, res, next) => {
   const params = [postId];
   const sql = `
     delete from "likes"
+          where "postId" = $1
+      returning *
+  `;
+
+  db.query(sql, params)
+    .then(results => res.json(results.rows[0]))
+    .catch(err => next(err));
+});
+
+app.delete('/api/comments/:postId', (req, res, next) => {
+  const postId = req.params.postId;
+
+  if (!postId) {
+    throw new ClientError(400, 'PostId is a required fields');
+  }
+
+  const params = [postId];
+  const sql = `
+    delete from "Comments"
           where "postId" = $1
       returning *
   `;

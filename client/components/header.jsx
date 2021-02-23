@@ -11,7 +11,7 @@ export default class Header extends React.Component {
       return (
         <nav className="navbar navbar-expand-lg navbar-dark navbar-color">
           <div className="container-fluid">
-            <a className="navbar-brand" href="#">EarthSpace</a>
+            <a className="navbar-brand">EarthSpace</a>
           </div>
         </nav>
       );
@@ -24,7 +24,6 @@ export default class Header extends React.Component {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#">Home</Nav.Link>
             <Nav.Link href="#post-form">Create a Post</Nav.Link>
             <Nav.Link href="#users-posts">My Posts</Nav.Link>
             <Nav.Link onClick={handleSignOut} href="#sign-in">Log Out</Nav.Link>

@@ -8,7 +8,7 @@ export default class ViewPost extends React.Component {
     super(props);
 
     this.state = {
-      post: [],
+      post: null,
       previousComments: [],
       comment: null
     };
@@ -42,6 +42,7 @@ export default class ViewPost extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const { comment } = this.state;
+
     const token = window.localStorage.getItem('earth-jwt');
 
     fetch(`/api/comments/${this.props.postId}`, {
@@ -69,7 +70,7 @@ export default class ViewPost extends React.Component {
   }
 
   render() {
-    if (this.state.post.length === 0) return null;
+    if (!this.state.post) return null;
 
     const token = window.localStorage.getItem('earth-jwt');
     const user = token ? decodeToken(token) : null;

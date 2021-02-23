@@ -130,27 +130,6 @@ app.get('/api/post/:postId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/comments/:postId', (req, res, next) => {
-  const { content, userId } = req.body;
-  const postId = Number(req.params.postId);
-  // const { userId } = req.user;
-
-  if (!content) {
-    throw new ClientError(400, 'Content is a required fields');
-  }
-
-  const params = [userId, postId, content];
-  const sql = `
-    insert into "Comments" ("userId", "postId", "content")
-         values  ($1, $2, $3)
-      returning  *
-  `;
-
-  db.query(sql, params)
-    .then(results => res.json(results.rows[0]))
-    .catch(err => next(err));
-});
-
 app.get('/api/comments/:postId', (req, res, next) => {
   const postId = Number(req.params.postId);
 
@@ -175,6 +154,29 @@ app.get('/api/comments/:postId', (req, res, next) => {
 });
 
 app.use(authorizationMiddleware);
+
+app.post('/api/comments/:postId', (req, res, next) => {
+  const { comment } = req.body;
+  const content = comment;
+  const postId = Number(req.params.postId);
+  const { userId } = req.user;
+
+  if (!content) {
+    throw new ClientError(400, 'Content is a required fields');
+  }
+
+  const params = [userId, postId, content];
+  console.log(params);
+  const sql = `
+    insert into "Comments" ("userId", "postId", "content")
+         values  ($1, $2, $3)
+      returning  *
+  `;
+
+  db.query(sql, params)
+    .then(results => res.json(results.rows[0]))
+    .catch(err => next(err));
+});
 
 app.post('/api/post-form', (req, res, next) => {
   const { title, content } = req.body;

@@ -6,10 +6,15 @@ import decodeToken from '../lib/decode-token';
 export default class ViewPost extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       post: [],
-      comments: []
+      previousComments: [],
+      comment: null
     };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -21,10 +26,39 @@ export default class ViewPost extends React.Component {
       .then(res => res.json())
       .then(comments => {
         const commentsArray = [];
-
+        console.log(commentsArray);
         commentsArray.push(comments);
-        this.setState({ comments: commentsArray });
+        this.setState({ previousComments: commentsArray });
       });
+  }
+
+  handleChange(event) {
+    const { name, value } = event.target;
+    const commentState = this.state.comment;
+    const newCommentState = Object.assign({}, commentState);
+
+    newCommentState[name] = value;
+    console.log(newCommentState);
+    this.setState({ comment: newCommentState });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const { comment } = this.state;
+    const token = window.localStorage.getItem('earth-jwt');
+    console.log(comment);
+    fetch(`/api/comments/${this.props.postId}`, {
+      method: 'POST',
+      headers: {
+        'X-Access-Token': token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(comment)
+    })
+      .then(res => {
+        event.target.reset();
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
@@ -74,7 +108,7 @@ export default class ViewPost extends React.Component {
             <p className="mx-3">comments:</p>
             {
 
-              this.state.comments.map(comment => {
+              this.state.previousComments.map(comment => {
                 return (
                   <div key={comment.commentId}>
                     <OneComment
@@ -86,12 +120,13 @@ export default class ViewPost extends React.Component {
 
             }
           </div>
-          <form action="post">
-            <textarea
-            className="form-control shadow bg-white"
+          <form action="post" onSubmit={this.handleSubmit}>
+            <textarea onChange={this.handleChange}
+              className="form-control shadow bg-white"
               name="comment" id="comment"
-              cols="60" rows="2"></textarea>
-          <button type="submit" className="btn button my-3">
+              cols="60" rows="2">
+            </textarea>
+            <button type="submit" className="btn button my-3">
               Comment
             </button>
           </form>

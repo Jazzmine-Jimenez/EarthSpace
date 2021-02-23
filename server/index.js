@@ -162,6 +162,7 @@ app.get('/api/comments/:postId', (req, res, next) => {
 
   const sql = `
     select "Comments"."content",
+           "Comments"."commentId",
            "Users"."username"
       from "Comments"
       join "Users" using ("userId")

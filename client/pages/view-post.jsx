@@ -7,8 +7,8 @@ export default class ViewPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      post: null,
-      comments: null
+      post: [],
+      comments: []
     };
   }
 
@@ -19,11 +19,16 @@ export default class ViewPost extends React.Component {
 
     fetch(`/api/comments/${this.props.postId}`)
       .then(res => res.json())
-      .then(comments => this.setState({ comments }));
+      .then(comments => {
+        const commentsArray = [];
+
+        commentsArray.push(comments);
+        this.setState({ comments: commentsArray });
+      });
   }
 
   render() {
-    if (!this.state.post) return null;
+    if (this.state.post.length === 0) return null;
 
     const token = window.localStorage.getItem('earth-jwt');
     const user = token ? decodeToken(token) : null;
@@ -65,20 +70,46 @@ export default class ViewPost extends React.Component {
               </div>
             </div>
           </div>
-          <div className="p-3 text-muted">
-            <p>comments:</p>
+          <div>
+            <p className="mx-3">comments:</p>
             {
-              console.log(this.state.comments)
+
+              this.state.comments.map(comment => {
+                return (
+                  <div key={comment.commentId}>
+                    <OneComment
+                      comment={comment}
+                    />
+                  </div>
+                );
+              })
 
             }
           </div>
+          <form action="post">
+            <textarea
+            className="form-control shadow bg-white"
+              name="comment" id="comment"
+              cols="60" rows="2"></textarea>
+          <button type="submit" className="btn button my-3">
+              Comment
+            </button>
+          </form>
         </>
     );
   }
 }
 
 function OneComment(props) {
-  console.log('inisde comment function');
+  const { content, username } = props.comment;
+
+  return (
+    <div>
+      <p className="text-muted shadow px-4 py-3 bg-white rounded w-100">
+          {username}: {content}
+      </p>
+    </div>
+  );
 }
 
 ViewPost.contextType = AppContext;

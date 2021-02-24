@@ -131,7 +131,7 @@ export default class PostForm extends React.Component {
           <div className="row form-group">
             <div className="col-sm-12 mb-3">
               <label className="text-body" htmlFor="content">What would you like to share?</label>
-              <textarea required onChange={this.handleChange} className="form-control" name="content" id="content" cols="30" rows="10"></textarea>
+              <textarea required onChange={this.handleChange} className="form-control" name="content" id="content" cols="30" rows="20"></textarea>
             </div>
           </div>
           <button type="submit" className="btn button my-3">Post</button>

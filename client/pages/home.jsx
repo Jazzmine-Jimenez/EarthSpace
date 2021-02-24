@@ -111,7 +111,6 @@ function OnePost(props) {
           <div className="col-sm-7 py-sm-5 px-sm-5">
             <h5 className="text-body"> {title} </h5>
             <p className="sub-title fw-lighter"> <i className="fas fa-hashtag me-1 "></i>{tagsString} </p>
-            <h6 className="fw-lighter"><i className="fas fa-user"></i> {username} </h6>
           </div>
         </div>
       </a>
@@ -121,6 +120,9 @@ function OnePost(props) {
           <p className={buttonStyle} onClick={props.handleLikeClick} data-post-id={postId}><i
             className="fas fa-globe-americas" data-post-id={postId}></i> Like
           </p>
+        </div>
+        <div className="col-sm-6 text-sm-end">
+          <p><i className="fas fa-user"></i> {username} </p>
         </div>
       </div>
     </div>

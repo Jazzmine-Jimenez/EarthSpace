@@ -83,38 +83,37 @@ export default class UsersPosts extends React.Component {
 
     if (!token) return <Redirect to="sign-in" />;
 
-    if (posts.length === 0) {
+    if (posts.length !== 0) {
       return (
         <div>
-        <h3 className="heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
-        <div className="text-center">
-          <p className="text-center">Oh... well you have not shared anything yet!</p>
-          <a href="#post-form" role="button" className="btn btn-dark my-3"> Create a Post</a>
-        </div>
+          <h3 className="heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
+          {
+            this.state.posts.map(post => {
 
+              return (
+                <div key={post.postId}>
+                  <OnePost
+                    post={post}
+                    handleLikeClick={this.handleLikeClick}
+                    likes={this.state.likes}
+                  />
+                </div>
+              );
+            })
+          }
         </div>
-      );
-    } else {
-      return (
-        <div>
-        <h3 className="heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
-        {
-          this.state.posts.map(post => {
-
-            return (
-              <div key={post.postId}>
-                <OnePost
-                  post={post}
-                  handleLikeClick={this.handleLikeClick}
-                  likes={this.state.likes}
-                />
-              </div>
-            );
-          })
-        }
-      </div>
       );
     }
+    return (
+        <div>
+          <h3 className="heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
+          <div className="text-center">
+            <p className="text-center">Oh... well you have not shared anything yet!</p>
+            <a href="#post-form" role="button" className="btn btn-dark my-3"> Create a Post</a>
+          </div>
+
+        </div>
+    );
 
   }
 }
@@ -139,7 +138,6 @@ function OnePost(props) {
           <div className="col-sm-7 py-sm-5 px-sm-5">
             <h5 className="text-body"> {title} </h5>
             <p className="sub-title fw-lighter"> <i className="fas fa-hashtag me-1 "></i>{tagsString} </p>
-            <h6 className="fw-lighter"><i className="fas fa-user"></i> {username} </h6>
           </div>
         </div>
       </a>

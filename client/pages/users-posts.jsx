@@ -37,8 +37,8 @@ export default class UsersPosts extends React.Component {
       .then(likes => {
         likes.forEach(like => likesArray.push(like.postId));
         this.setState({ likes: likesArray });
-      });
-
+      })
+      .catch(err => console.error(err));
   }
 
   handleLikeClick(event) {
@@ -53,18 +53,14 @@ export default class UsersPosts extends React.Component {
           'X-Access-Token': token
         }
       })
-        .then(res => {
-          res.json();
-        });
+        .then(res => res.json())
+        .catch(err => console.error(err));
 
       const updatedLikes = likes.filter(like => like !== postId);
-
       this.setState({ likes: updatedLikes });
+
       return;
     }
-
-    likes.push(postId);
-    this.setState({ likes });
 
     fetch(`/api/likes/post/${postId}`, {
       method: 'POST',
@@ -72,9 +68,11 @@ export default class UsersPosts extends React.Component {
         'X-Access-Token': token
       }
     })
-      .then(res => {
-        res.json();
-      });
+      .then(res => res.json())
+      .catch(err => console.error(err));
+
+    likes.push(postId);
+    this.setState({ likes });
   }
 
   render() {

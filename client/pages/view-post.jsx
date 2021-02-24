@@ -20,13 +20,15 @@ export default class ViewPost extends React.Component {
   componentDidMount() {
     fetch(`/api/post/${this.props.postId}`)
       .then(res => res.json())
-      .then(post => this.setState({ post }));
+      .then(post => this.setState({ post }))
+      .catch(err => console.error(err));
 
     fetch(`/api/comments/${this.props.postId}`)
       .then(res => res.json())
       .then(comments => {
         this.setState({ previousComments: comments });
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   handleChange(event) {

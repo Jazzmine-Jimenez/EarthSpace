@@ -105,7 +105,6 @@ export default class AuthForm extends React.Component {
               <p>Don&apos;t want an account just yet? I respect that. <br/>
                 <a className="btn text-decoration-underline" onClick={this.handleDemoSignIn}> Sign into Demo Account </a>
               </p>
-
             </div>
           </div>
         </form>

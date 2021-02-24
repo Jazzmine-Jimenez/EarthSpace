@@ -38,7 +38,7 @@ export default class SignUp extends React.Component {
   render() {
     return (
       <div className="container">
-        <div className="heading text-center mt-5">
+        <div className="heading text-center">
           <div className="row">
             <div className="col-12">
               <h1>Connect With Other Earthlings</h1>
@@ -88,7 +88,7 @@ export default class SignUp extends React.Component {
           </form>
         </div>
         <div className="row">
-          <div className="col-12 text-center">
+          <div className="col-12 text-center mb-3">
             <a className="btn text-decoration-underline" href="#sign-in"> Go back to sign-in. </a>
           </div>
         </div>

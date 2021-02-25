@@ -24,9 +24,7 @@ export default class UsersPosts extends React.Component {
       }
     })
       .then(res => res.json())
-      .then(posts => {
-        this.setState({ posts });
-      });
+      .then(posts => this.setState({ posts }));
 
     fetch('/api/likes', {
       headers: {

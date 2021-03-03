@@ -1,32 +1,24 @@
-import React from 'react';
-import AppContext from '../lib/app-context';
+import React, { useEffect, useState } from 'react';
 import Redirect from '../components/redirect';
 
-export default class UsersPosts extends React.Component {
-  constructor(props) {
-    super(props);
+export default function UsersPosts() {
+  const token = window.localStorage.getItem('earth-jwt');
+  if (!token) return <Redirect to="sign-in" />;
 
-    this.handleLikeClick = this.handleLikeClick.bind(this);
+  const [posts, setPosts] = useState([]);
+  const [likes, setLikes] = useState([]);
 
-    this.state = {
-      posts: [],
-      likes: []
-    };
-  }
-
-  componentDidMount() {
-    const token = window.localStorage.getItem('earth-jwt');
-    const likesArray = [];
-
+  useEffect(() => {
     fetch('/api/users-posts', {
       headers: {
         'X-Access-Token': token
       }
     })
       .then(res => res.json())
-      .then(posts => {
-        this.setState({ posts });
-      });
+      .then(allPost => setPosts(allPost))
+      .catch(err => console.error(err));
+
+    const likesArray = [];
 
     fetch('/api/likes', {
       headers: {
@@ -34,15 +26,14 @@ export default class UsersPosts extends React.Component {
       }
     })
       .then(res => res.json())
-      .then(likes => {
+      .then(currentLikes => {
         likes.forEach(like => likesArray.push(like.postId));
-        this.setState({ likes: likesArray });
-      });
+        setLikes(likesArray);
+      })
+      .catch(err => console.error(err));
+  }, []);
 
-  }
-
-  handleLikeClick(event) {
-    const { likes } = this.state;
+  const handleLikeClick = event => {
     const postId = Number(event.target.getAttribute('data-post-id'));
     const token = window.localStorage.getItem('earth-jwt');
 
@@ -53,18 +44,12 @@ export default class UsersPosts extends React.Component {
           'X-Access-Token': token
         }
       })
-        .then(res => {
-          res.json();
-        });
+        .then(res => res.json())
+        .catch(err => console.error(err));
 
       const updatedLikes = likes.filter(like => like !== postId);
-
-      this.setState({ likes: updatedLikes });
-      return;
+      setLikes(updatedLikes);
     }
-
-    likes.push(postId);
-    this.setState({ likes });
 
     fetch(`/api/likes/post/${postId}`, {
       method: 'POST',
@@ -72,39 +57,35 @@ export default class UsersPosts extends React.Component {
         'X-Access-Token': token
       }
     })
-      .then(res => {
-        res.json();
-      });
+      .then(res => res.json())
+      .catch(err => console.error(err));
+
+    likes.push(postId);
+    setLikes(likes);
+  };
+
+  if (posts.length !== 0) {
+    return (
+            <div>
+              <h3 className="heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
+              {
+                posts.map(post => {
+                  return (
+                    <div key={post.postId}>
+                      <OnePost
+                        post={post}
+                        handleLikeClick={handleLikeClick}
+                        likes={likes}
+                      />
+                    </div>
+                  );
+                })
+              }
+            </div>
+    );
   }
 
-  render() {
-    const token = window.localStorage.getItem('earth-jwt');
-    const posts = this.state.posts;
-
-    if (!token) return <Redirect to="sign-in" />;
-
-    if (posts.length !== 0) {
-      return (
-        <div>
-          <h3 className="heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
-          {
-            this.state.posts.map(post => {
-
-              return (
-                <div key={post.postId}>
-                  <OnePost
-                    post={post}
-                    handleLikeClick={this.handleLikeClick}
-                    likes={this.state.likes}
-                  />
-                </div>
-              );
-            })
-          }
-        </div>
-      );
-    }
-    return (
+  return (
         <div>
           <h3 className="heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
           <div className="text-center">
@@ -113,16 +94,14 @@ export default class UsersPosts extends React.Component {
           </div>
 
         </div>
-    );
-
-  }
+  );
 }
 
 function OnePost(props) {
   const { title, tags, username, postId } = props.post;
   const { likes } = props;
 
-  let buttonStyle;
+  let buttonStyle = null;
   if (likes.includes(postId)) {
     buttonStyle = 'text-success fw-bold';
   } else {
@@ -155,5 +134,3 @@ function OnePost(props) {
     </div>
   );
 }
-
-UsersPosts.contextType = AppContext;

@@ -33,37 +33,6 @@ export default function UsersPosts() {
       .catch(err => console.error(err));
   }, []);
 
-  const handleLikeClick = event => {
-    const postId = Number(event.target.getAttribute('data-post-id'));
-    const token = window.localStorage.getItem('earth-jwt');
-
-    if (likes.includes(postId)) {
-      fetch(`/api/likes/post/${postId}`, {
-        method: 'DELETE',
-        headers: {
-          'X-Access-Token': token
-        }
-      })
-        .then(res => res.json())
-        .catch(err => console.error(err));
-
-      const updatedLikes = likes.filter(like => like !== postId);
-      setLikes(updatedLikes);
-    }
-
-    fetch(`/api/likes/post/${postId}`, {
-      method: 'POST',
-      headers: {
-        'X-Access-Token': token
-      }
-    })
-      .then(res => res.json())
-      .catch(err => console.error(err));
-
-    likes.push(postId);
-    setLikes(likes);
-  };
-
   if (posts.length !== 0) {
     return (
             <div>
@@ -74,8 +43,9 @@ export default function UsersPosts() {
                     <div key={post.postId}>
                       <OnePost
                         post={post}
-                        handleLikeClick={handleLikeClick}
+                        // handleLikeClick={handleLikeClick}
                         likes={likes}
+                        setLikes={setLikes}
                       />
                     </div>
                   );
@@ -99,13 +69,49 @@ export default function UsersPosts() {
 
 function OnePost(props) {
   const { title, tags, username, postId } = props.post;
-  const { likes } = props;
+  const { likes, setLikes } = props;
 
-  let buttonStyle = null;
-  if (likes.includes(postId)) {
-    buttonStyle = 'text-success fw-bold';
-  } else {
-    buttonStyle = 'text-muted';
+  const handleLikeClick = event => {
+    console.log('inside function');
+    const postId = Number(event.target.getAttribute('data-post-id'));
+    const token = window.localStorage.getItem('earth-jwt');
+
+    if (likes.includes(postId)) {
+      fetch(`/api/likes/post/${postId}`, {
+        method: 'DELETE',
+        headers: {
+          'X-Access-Token': token
+        }
+      })
+        .then(res => res.json())
+        .catch(err => console.error(err));
+
+      const updatedLikes = likes.filter(like => like !== postId);
+      setLikes(updatedLikes);
+
+    } else {
+      fetch(`/api/likes/post/${postId}`, {
+        method: 'POST',
+        headers: {
+          'X-Access-Token': token
+        }
+      })
+        .then(res => res.json())
+        .catch(err => console.error(err));
+
+      likes.push(postId);
+      setLikes(likes);
+    }
+  };
+
+  function handleButtonStyle(likes, postId) {
+    let buttonStyle = null;
+    if (likes.includes(postId)) {
+      buttonStyle = 'text-success fw-bold';
+    } else {
+      buttonStyle = 'text-muted';
+    }
+    return buttonStyle;
   }
 
   const tagsString = tags.join(', ');
@@ -123,7 +129,7 @@ function OnePost(props) {
       <hr/>
       <div className="row py-3 px-5 text-muted fs-5">
         <div className="col-sm-6 like-button">
-          <p className={buttonStyle} onClick={props.handleLikeClick} data-post-id={postId}><i
+          <p className={handleButtonStyle(likes, postId)} onClick={handleLikeClick} data-post-id={postId}><i
             className="fas fa-globe-americas" data-post-id={postId}></i> Like
           </p>
         </div>

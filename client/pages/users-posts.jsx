@@ -18,6 +18,9 @@ export default function UsersPosts() {
       .then(allPost => setPosts(allPost))
       .catch(err => console.error(err));
 
+  }, []);
+
+  useEffect(() => {
     const likesArray = [];
 
     fetch('/api/likes', {
@@ -31,7 +34,7 @@ export default function UsersPosts() {
         setLikes(likesArray);
       })
       .catch(err => console.error(err));
-  }, []);
+  }, [likes]);
 
   if (posts.length !== 0) {
     return (

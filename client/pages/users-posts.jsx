@@ -34,7 +34,7 @@ export default function UsersPosts() {
         setLikes(likesArray);
       })
       .catch(err => console.error(err));
-  }, [likes]);
+  }, []);
 
   if (posts.length !== 0) {
     return (
@@ -46,7 +46,6 @@ export default function UsersPosts() {
                     <div key={post.postId}>
                       <OnePost
                         post={post}
-                        // handleLikeClick={handleLikeClick}
                         likes={likes}
                         setLikes={setLikes}
                       />
@@ -73,10 +72,9 @@ export default function UsersPosts() {
 function OnePost(props) {
   const { title, tags, username, postId } = props.post;
   const { likes, setLikes } = props;
+  const tagsString = tags.join(', ');
 
-  const handleLikeClick = event => {
-    console.log('inside function');
-    const postId = Number(event.target.getAttribute('data-post-id'));
+  const handleLikeClick = () => {
     const token = window.localStorage.getItem('earth-jwt');
 
     if (likes.includes(postId)) {
@@ -91,7 +89,6 @@ function OnePost(props) {
 
       const updatedLikes = likes.filter(like => like !== postId);
       setLikes(updatedLikes);
-
     } else {
       fetch(`/api/likes/post/${postId}`, {
         method: 'POST',
@@ -105,19 +102,15 @@ function OnePost(props) {
       likes.push(postId);
       setLikes(likes);
     }
+
   };
 
-  function handleButtonStyle(likes, postId) {
-    let buttonStyle = null;
-    if (likes.includes(postId)) {
-      buttonStyle = 'text-success fw-bold';
-    } else {
-      buttonStyle = 'text-muted';
-    }
-    return buttonStyle;
-  }
-
-  const tagsString = tags.join(', ');
+  // let buttonStyle = null;
+  // if (likes.includes(postId)) {
+  //   buttonStyle = 'text-success fw-bold';
+  // } else {
+  //   buttonStyle = 'text-muted';
+  // }
 
   return (
     <div className="shadow p-3 mb-4 bg-white rounded">
@@ -132,7 +125,7 @@ function OnePost(props) {
       <hr/>
       <div className="row py-3 px-5 text-muted fs-5">
         <div className="col-sm-6 like-button">
-          <p className={handleButtonStyle(likes, postId)} onClick={handleLikeClick} data-post-id={postId}><i
+          <p className="text-muted" onClick={handleLikeClick} data-post-id={postId}><i
             className="fas fa-globe-americas" data-post-id={postId}></i> Like
           </p>
         </div>

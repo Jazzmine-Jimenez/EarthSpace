@@ -30,7 +30,7 @@ export default function UsersPosts() {
     })
       .then(res => res.json())
       .then(currentLikes => {
-        likes.forEach(like => likesArray.push(like.postId));
+        currentLikes.forEach(like => likesArray.push(like.postId));
         setLikes(likesArray);
       })
       .catch(err => console.error(err));
@@ -89,6 +89,7 @@ function OnePost(props) {
 
       const updatedLikes = likes.filter(like => like !== postId);
       setLikes(updatedLikes);
+      document.getElementById(postId).className = 'text-muted';
     } else {
       fetch(`/api/likes/post/${postId}`, {
         method: 'POST',
@@ -101,16 +102,15 @@ function OnePost(props) {
 
       likes.push(postId);
       setLikes(likes);
+      document.getElementById(postId).className = 'text-success fw-bold';
     }
 
   };
 
-  // let buttonStyle = null;
-  // if (likes.includes(postId)) {
-  //   buttonStyle = 'text-success fw-bold';
-  // } else {
-  //   buttonStyle = 'text-muted';
-  // }
+  let buttonStyle = 'text-muted';
+  if (likes.includes(postId)) {
+    buttonStyle = 'text-success fw-bold';
+  }
 
   return (
     <div className="shadow p-3 mb-4 bg-white rounded">
@@ -125,8 +125,8 @@ function OnePost(props) {
       <hr/>
       <div className="row py-3 px-5 text-muted fs-5">
         <div className="col-sm-6 like-button">
-          <p className="text-muted" onClick={handleLikeClick} data-post-id={postId}><i
-            className="fas fa-globe-americas" data-post-id={postId}></i> Like
+          <p id={postId} className={buttonStyle} onClick={handleLikeClick}>
+            <i className="fas fa-globe-americas" data-post-id={postId}></i> Like
           </p>
         </div>
         <div className="col-sm-6 text-sm-end">

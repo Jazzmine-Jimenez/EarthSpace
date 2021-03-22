@@ -6,6 +6,10 @@ body {
   font-family: Roboto, Georgia, 'Times New Roman', Times, serif;
 }
 
+textarea{
+  white-space: pre;
+}
+
 .navbar-color {
   background-color: rgb(33, 104, 105);
 }

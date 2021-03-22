@@ -20,13 +20,15 @@ export default class ViewPost extends React.Component {
   componentDidMount() {
     fetch(`/api/post/${this.props.postId}`)
       .then(res => res.json())
-      .then(post => this.setState({ post }));
+      .then(post => this.setState({ post }))
+      .catch(err => console.error(err));
 
     fetch(`/api/comments/${this.props.postId}`)
       .then(res => res.json())
       .then(comments => {
         this.setState({ previousComments: comments });
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   handleChange(event) {
@@ -94,7 +96,7 @@ export default class ViewPost extends React.Component {
         <h3 className="title heading my-4">What you&apos;ve Shared with Other Earthlings </h3>
           <div className="shadow p-3 mb-4 bg-white rounded">
             <div className="row align-items-center">
-              <div className="col-sm-7 py-sm-5 px-sm-5">
+              <div className="col-sm-8 py-sm-5 px-sm-5">
                 <h3 className="title mb-sm-4"> {title} </h3>
                 <p className="sub-title">
                 <i className="fas fa-hashtag mx-sm-1"></i>

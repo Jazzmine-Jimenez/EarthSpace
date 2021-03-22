@@ -103,6 +103,7 @@ function OnePost(props) {
       likes.push(postId);
       setLikes(likes);
       document.getElementById(postId).className = 'text-success fw-bold';
+
     }
 
   };

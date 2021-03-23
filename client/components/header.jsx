@@ -3,6 +3,16 @@ import AppContext from '../lib/app-context';
 import { Navbar, Nav, Row } from 'react-bootstrap';
 
 export default class Header extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.renderHome = this.renderHome.bind(this);
+  }
+
+  renderHome() {
+    window.location.hash = '#';
+  }
+
   render() {
     const { handleSignOut } = this.context;
     const token = window.localStorage.getItem('earth-jwt');
@@ -16,7 +26,6 @@ export default class Header extends React.Component {
         </nav>
       );
     }
-
     return (
     <Row>
       <Navbar className="px-3 navbar-color" collapseOnSelect fixed="top" expand="lg" bg="navbar-color" variant="dark">
@@ -24,6 +33,7 @@ export default class Header extends React.Component {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
+            <Nav.Link href="#" onClick={this.renderHome}>Home</Nav.Link>
             <Nav.Link href="#post-form">Create a Post</Nav.Link>
             <Nav.Link href="#users-posts">My Posts</Nav.Link>
             <Nav.Link onClick={handleSignOut} href="#sign-in">Log Out</Nav.Link>

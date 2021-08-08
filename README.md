@@ -40,4 +40,4 @@ Try the application live at https://earthspace.herokuapp.com/
 
 - How to utilize React Components
 - How to pass through Context to use props throughout the application
-- How to create hash routes to cahnge the view of the page
+- How to create hash routes to change the view of the page
